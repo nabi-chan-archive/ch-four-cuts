@@ -1,0 +1,22 @@
+{
+  "allowCompoundWords": true,
+  "enableFiletypes": ["*"],
+  "enableGlobDot": true,
+  "ignorePaths": [".git", ".gitignore", ".vscode", "pnpm-lock.yaml", "*.sql", "CODEOWNERS"],
+  "numSuggestions": 0,
+  "useGitignore": true,
+  "words": [
+    "bezier",
+    "bgtxt",
+    "formik",
+    "iconify",
+    "nabi",
+    "Neue",
+    "NotoSans",
+    "Roboto",
+    "Segoe",
+    "vike",
+    "xlink",
+    "ch-four-cuts"
+  ]
+}

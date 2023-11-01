@@ -1,0 +1,34 @@
+{
+  "name": "@ch-four-cuts/repo",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "fix": "pnpm run '/^fix:.+$/'",
+    "fix:eslint": "pnpm lint:eslint --fix",
+    "fix:prettier": "pnpm lint:prettier --write",
+    "lint": "pnpm run '/^lint:.+$/'",
+    "lint:eslint": "eslint --max-warnings 0 .",
+    "lint:prettier": "prettier --check --ignore-unknown '**/*'",
+    "lint:spellcheck": "cspell --no-progress --relative '**/*'",
+    "pre-commit": "lint-staged --verbose --no-stash"
+  },
+  "devDependencies": {
+    "@ch-four-cuts/configs": "workspace:*",
+    "@commitlint/cli": "^18.2.0",
+    "@commitlint/config-conventional": "^18.1.0",
+    "cspell": "^7.3.8",
+    "eslint": "^8.48.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
+    "prettier": "^3.0.3",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@8.6.10",
+  "engines": {
+    "node": "^18 || ^20",
+    "pnpm": "^8.6.0"
+  }
+}

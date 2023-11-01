@@ -1,0 +1,26 @@
+{
+  "name": "@ch-four-cuts/bezier-design-system",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    },
+    "./icons": {
+      "import": "./src/icons.ts"
+    }
+  },
+  "dependencies": {
+    "@channel.io/bezier-icons": "^0.15.0",
+    "@channel.io/bezier-react": "^1.17.0",
+    "@types/styled-components": "^5.1.29",
+    "styled-components": "^5.3.11"
+  },
+  "devDependencies": {
+    "@ch-four-cuts/tsconfig": "workspace:^",
+    "@types/react": "^18.2.15",
+    "react": "^18.2.0",
+    "typescript": "^5.0.2"
+  }
+}

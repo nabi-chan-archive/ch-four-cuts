@@ -1,0 +1,10 @@
+.DS_Store
+
+node_modules/
+
+.turbo/
+
+dist/
+
+vite.config.ts.timestamp-*
+.env.local
