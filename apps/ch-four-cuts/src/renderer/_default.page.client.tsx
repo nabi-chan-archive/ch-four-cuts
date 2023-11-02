@@ -37,3 +37,5 @@ async function render(pageContext: PageContextClient) {
     root.render(page);
   }
 }
+
+export const clientRouting = true;
