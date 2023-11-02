@@ -1,3 +1,4 @@
+import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { getCertificate } from '@vitejs/plugin-basic-ssl';
 import compression from 'compression';
 import express from 'express';
@@ -5,6 +6,8 @@ import { createServer } from 'https';
 import { join } from 'path';
 import { renderPage } from 'vike/server';
 import { root } from './root.js';
+import { appRouter } from './routes/index.js';
+import { createContext } from './trpc.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -40,6 +43,14 @@ async function startServer() {
     ).middlewares;
     app.use(viteDevMiddleware);
   }
+
+  app.use(
+    '/trpc',
+    createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    }),
+  );
 
   app.get('*', async (req, res, next) => {
     const pageContextInit = {

@@ -1,9 +1,9 @@
+import { trpc } from '#/utils/trpc';
+
 export { Page };
 
 function Page() {
-  return (
-    <>
-      <span>hello, world!</span>
-    </>
-  );
+  const { data } = trpc.greet.useQuery('world');
+
+  return <>{data?.greeting}</>;
 }

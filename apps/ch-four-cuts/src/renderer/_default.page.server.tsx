@@ -1,10 +1,13 @@
 export { render };
-export const passToClient = ['pageProps', 'urlPathname'];
+export const passToClient = ['pageProps', 'urlPathname', 'dehydratedState'];
 
 import { ServerStyleSheet } from '@ch-four-cuts/bezier-design-system';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpBatchLink, loggerLink } from '@trpc/react-query';
 import ReactDOMServer from 'react-dom/server';
 import { dangerouslySkipEscape, escapeInject } from 'vike/server';
 import favicon from '#/assets/favicon.ico';
+import { trpc } from '#/utils/trpc';
 import { PageShell } from '../features/PageShell';
 import type { PageContextServer } from '../types/vike';
 
@@ -13,12 +16,20 @@ async function render(pageContext: PageContextServer) {
 
   if (!Page) throw new Error('My render() hook expects pageContext.Page to be defined');
   const sheet = new ServerStyleSheet();
+  const queryClient = new QueryClient();
+  const trpcClient = trpc.createClient({
+    links: [loggerLink(), httpBatchLink({ url: '/trpc' })],
+  });
 
   const pageHtml = ReactDOMServer.renderToString(
     sheet.collectStyles(
-      <PageShell pageContext={pageContext}>
-        <Page {...pageProps} />
-      </PageShell>,
+      <trpc.Provider queryClient={queryClient} client={trpcClient}>
+        <QueryClientProvider client={queryClient}>
+          <PageShell pageContext={pageContext}>
+            <Page {...pageProps} />
+          </PageShell>
+        </QueryClientProvider>
+      </trpc.Provider>,
     ),
   );
 
