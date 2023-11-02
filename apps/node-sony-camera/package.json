@@ -1,0 +1,19 @@
+{
+  "name": "node-sony-camera",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node --esm index.ts"
+  },
+  "dependencies": {
+    "@ch-four-cuts/sony-camera": "workspace:^",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "@ch-four-cuts/tsconfig": "workspace:^",
+    "@types/express": "^4.17.20",
+    "@types/node": "^20.8.10",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}
