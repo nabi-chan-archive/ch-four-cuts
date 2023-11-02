@@ -1,0 +1,22 @@
+{
+  "extends": "@ch-four-cuts/tsconfig",
+  "compilerOptions": {
+    "module": "ES2020",
+    "target": "ES2020",
+    "types": ["vite/client"],
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "#/server/*": ["server/*"],
+      "#/*": ["src/*"]
+    }
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "esm": true,
+    "compilerOptions": {
+      "module": "Node16",
+      "moduleResolution": "Node16"
+    }
+  }
+}
