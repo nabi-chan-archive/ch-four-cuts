@@ -5,7 +5,7 @@
     "build": "vite build",
     "dev": "npm run server:dev",
     "prod": "npm run lint && npm run build && npm run server:prod",
-    "server": "ts-node --esm ./server/index.ts",
+    "server": "node --experimental-specifier-resolution=node --loader=./server/loader.js ./server/index.ts",
     "server:dev": "npm run server",
     "server:prod": "cross-env NODE_ENV=production npm run server"
   },
@@ -41,6 +41,7 @@
     "cross-env": "^7.0.3",
     "sirv": "^2.0.3",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6",
     "vike": "^0.4.144",
     "vite": "^4.4.9"

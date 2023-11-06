@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { QRCodeSVG } from 'qrcode.react';
+import * as QRCODE from 'qrcode.react';
 import type { PropsWithChildren } from 'react';
 
 interface CoverProps {
@@ -58,7 +58,7 @@ export function Footer({ qrCodeLink }: FooterProps) {
         </svg>
         <span>{format(new Date(), 'yyyy-MM-dd HH:mm:ss')} @ Channel Talk</span>
       </div>
-      <QRCodeSVG value={qrCodeLink} size={60} />
+      <QRCODE.QRCodeSVG value={qrCodeLink} size={60} />
     </div>
   );
 }

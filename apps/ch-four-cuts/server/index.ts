@@ -5,9 +5,9 @@ import express from 'express';
 import { createServer } from 'https';
 import { join } from 'path';
 import { renderPage } from 'vike/server';
-import { root } from './root.js';
-import { appRouter } from './routes/index.js';
-import { createContext } from './trpc.js';
+import { root } from '#/server/root';
+import { appRouter } from '#/server/routes';
+import { createContext } from '#/server/trpc';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
