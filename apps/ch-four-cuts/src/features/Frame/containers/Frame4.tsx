@@ -9,10 +9,13 @@ interface Frame4Props {
 export function Frame4({ imageSrc, qrCodeLink, hasPadding = true }: Frame4Props) {
   return (
     <Frame.Cover hasPadding={hasPadding}>
-      {imageSrc.map((src) => (
-        <Frame.Image src={src} key={src} />
-      ))}
-      <Frame.Footer qrCodeLink={qrCodeLink} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <Frame.Image src={imageSrc[0]} />
+        <Frame.Image src={imageSrc[0]} />
+        <Frame.Image src={imageSrc[0]} />
+        <Frame.Image src={imageSrc[0]} />
+        <Frame.Footer qrCodeLink={qrCodeLink} />
+      </div>
     </Frame.Cover>
   );
 }
