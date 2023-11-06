@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import type { FrameId } from '#/features/AppState';
+import type { FrameId } from '#/features/Frame';
 
 export const sessionAtom = atom<string | null>(null);
 

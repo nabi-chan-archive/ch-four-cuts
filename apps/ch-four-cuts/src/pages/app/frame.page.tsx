@@ -2,8 +2,9 @@ import { Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-sy
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useSetAtom } from 'jotai';
 import { navigate } from 'vike/client/router';
-import { type FrameId, printerFrameAtom } from '#/features/AppState';
+import { printerFrameAtom } from '#/features/AppState';
 import * as Styled from './frame.styled';
+import type { FrameId } from '#/features/Frame';
 
 function Page() {
   const setFrame = useSetAtom(printerFrameAtom);
