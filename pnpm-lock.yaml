@@ -52,6 +52,9 @@ importers:
       '@trpc/server':
         specifier: ^10.43.0
         version: 10.43.0
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
       express:
         specifier: ^4.18.2
         version: 4.18.2
@@ -3978,6 +3981,14 @@ packages:
       { integrity: sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg== }
     engines: { node: '>=8' }
     dev: true
+
+  /date-fns@2.30.0:
+    resolution:
+      { integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw== }
+    engines: { node: '>=0.11' }
+    dependencies:
+      '@babel/runtime': 7.23.2
+    dev: false
 
   /debug@2.6.9:
     resolution:
