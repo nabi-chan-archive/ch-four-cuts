@@ -1,6 +1,8 @@
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
 import satori from 'satori';
+import { z } from 'zod';
+import { generateImage } from '../../src/features/Frame/server/generateImage.js';
 import { publicProcedure, router } from '../trpc.js';
 
 export const satoriRouter = router({
@@ -36,4 +38,21 @@ export const satoriRouter = router({
       },
     );
   }),
+  frame: publicProcedure
+    .input(
+      z.object({
+        frameId: z.union([z.literal(1), z.literal(4)]),
+        imageUrl: z.union([z.string(), z.array(z.string()).length(4)]),
+        hasPadding: z.boolean().optional(),
+      }),
+    )
+    .output(z.string())
+    .query(async ({ input }) => {
+      return generateImage({
+        frameId: input.frameId,
+        imageUrl: input.imageUrl as string | [string, string, string, string],
+        qrcodeUrl: 'https://www.google.com',
+        hasPadding: input.hasPadding ?? false,
+      });
+    }),
 });
