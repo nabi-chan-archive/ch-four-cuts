@@ -10,7 +10,7 @@ export function Frame4({ imageSrc, qrCodeLink, hasPadding = true }: Frame4Props)
   return (
     <Frame.Cover hasPadding={hasPadding}>
       {imageSrc.map((src) => (
-        <Frame.Image src={src} />
+        <Frame.Image src={src} key={src} />
       ))}
       <Frame.Footer qrCodeLink={qrCodeLink} />
     </Frame.Cover>
