@@ -8,11 +8,12 @@ import {
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon, MinusIcon, PlusIcon } from '@ch-four-cuts/bezier-design-system/icons';
-import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { printerCountAtom } from '#/features/AppState';
 import * as Styled from './intro.styled';
 
 function Page() {
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useAtom(printerCountAtom);
 
   return (
     <Styled.Container>
