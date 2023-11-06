@@ -8,9 +8,12 @@ import {
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon, MinusIcon, PlusIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { useState } from 'react';
 import * as Styled from './intro.styled';
 
 function Page() {
+  const [count, setCount] = useState(1);
+
   return (
     <Styled.Container>
       <Styled.Wrapper>
@@ -19,9 +22,21 @@ function Page() {
           얼마나 많이 인쇄할까요?
         </Text>
         <Styled.ButtonSelector>
-          <Button styleVariant={ButtonStyleVariant.Secondary} leftContent={MinusIcon} size={ButtonSize.XL} />
-          <Styled.ButtonText bold>{1}</Styled.ButtonText>
-          <Button styleVariant={ButtonStyleVariant.Secondary} leftContent={PlusIcon} size={ButtonSize.XL} />
+          <Button
+            styleVariant={ButtonStyleVariant.Secondary}
+            leftContent={MinusIcon}
+            size={ButtonSize.XL}
+            disabled={count <= 1}
+            onClick={() => setCount((prev) => Math.max(prev - 1, 1))}
+          />
+          <Styled.ButtonText bold>{count}</Styled.ButtonText>
+          <Button
+            styleVariant={ButtonStyleVariant.Secondary}
+            leftContent={PlusIcon}
+            size={ButtonSize.XL}
+            disabled={count >= 5}
+            onClick={() => setCount((prev) => Math.min(prev + 1, 5))}
+          />
         </Styled.ButtonSelector>
         <a href="/app/frame">
           <Button text="다음으로" size={ButtonSize.XL} />
