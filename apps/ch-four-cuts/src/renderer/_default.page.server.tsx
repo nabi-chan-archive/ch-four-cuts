@@ -1,5 +1,5 @@
 export { render };
-export const passToClient = ['pageProps', 'urlPathname', 'dehydratedState'];
+export const passToClient = ['pageProps', 'dehydratedState'];
 
 import { ServerStyleSheet } from '@ch-four-cuts/bezier-design-system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
