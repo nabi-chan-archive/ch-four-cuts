@@ -1,9 +1,8 @@
 import SonyCamera from '@ch-four-cuts/sony-camera';
 import { observable } from '@trpc/server/observable';
 import EventEmitter from 'events';
-import { writeFile } from 'fs/promises';
-import { resolve } from 'path';
 import { z } from 'zod';
+import { convertJpgToPng } from '#/features/Images/utils/convertJpgToPng';
 import { publicProcedure, router } from '../trpc';
 
 const event = new EventEmitter();
@@ -116,7 +115,7 @@ export const cameraRouter = router({
             ? `${input.outputUrl}/${photoName}`
             : `public/images/${photoName}`;
 
-          writeFile(resolve(savePath), buffer);
+          convertJpgToPng(buffer, savePath);
 
           done(buffer.toString('base64'));
         });
