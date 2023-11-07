@@ -11,9 +11,47 @@ import {
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import _ from 'lodash';
+import { useState } from 'react';
+import { trpc } from '#/utils/trpc';
 import * as Styled from './index.styled';
 
 function Page() {
+  const utils = trpc.useUtils();
+  const [previewDataUrl, setPreviewDataUrl] = useState('');
+  const [capturedImages, setCapturedImages] = useState<string[]>([]);
+
+  const { data: connected } = trpc.camera.connected.useQuery();
+  const { data: params } = trpc.camera.params.useQuery();
+  const { mutate: connect, isLoading: isConnecting } = trpc.camera.connect.useMutation({
+    onSuccess: () => {
+      utils.camera.connected.invalidate();
+      utils.camera.params.invalidate();
+    },
+  });
+  const { mutate: disconnect, isLoading: isDisconnecting } = trpc.camera.disconnect.useMutation();
+  const { mutate: enablePreview } = trpc.camera.enablePreview.useMutation();
+  const { mutate: disablePreview } = trpc.camera.disablePreview.useMutation();
+  const { mutate: capture } = trpc.camera.capture.useMutation({
+    onSuccess(data) {
+      setCapturedImages((prev) => [...prev, data]);
+    },
+  });
+  trpc.camera.info.useSubscription(undefined, {
+    enabled: connected,
+    onData: (data) => {
+      if (_.get(data as { connected: boolean }, 'connected') === true) {
+        utils.camera.connected.invalidate();
+        utils.camera.params.invalidate();
+      }
+      utils.camera.params.invalidate();
+    },
+  });
+  trpc.camera.preview.useSubscription(undefined, {
+    enabled: connected,
+    onData: setPreviewDataUrl,
+  });
+
   return (
     <Styled.Container>
       <Styled.Header>
@@ -36,7 +74,9 @@ function Page() {
                 연결 상태
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14}>연결 되어있음</Text>
+            <Text typo={Typography.Size14} color={connected ? 'bgtxt-green-normal' : 'bgtxt-yellow-normal'}>
+              {connected ? '연결되어있음' : '연결되어있지않음'}
+            </Text>
           </FormControl>
           <FormControl labelPosition="left">
             <FormLabel>
@@ -44,7 +84,7 @@ function Page() {
                 남은 카메라 장수
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14}>4096장</Text>
+            <Text typo={Typography.Size14}>{params?.photosRemaining ?? 0}</Text>
           </FormControl>
           <FormControl labelPosition="left">
             <FormLabel>
@@ -52,23 +92,21 @@ function Page() {
                 미리보기
               </Text>
             </FormLabel>
-            <Styled.Preview src="https://placekitten.com/1920/1080" alt="" />
-          </FormControl>
-          <FormControl labelPosition="left">
-            <FormLabel>
-              <Text typo={Typography.Size14} bold>
-                useFlash
-              </Text>
-            </FormLabel>
-            <Select dropdownInterpolation={Styled.DropdownInterpolation} text="on">
-              <ListItem content="어쩌구 저쩌구" />
-            </Select>
+            <AlphaStack direction="vertical" spacing={16}>
+              <Styled.Preview src={`data:image/png;base64,${previewDataUrl}`} alt="연결이 되어있지 않습니다." />
+              <AlphaStack direction="horizontal" spacing={16} style={{ overflowX: 'auto' }}>
+                {capturedImages.map((image) => (
+                  <img style={{ width: 200, borderRadius: 16 }} src={`data:image/png;base64,${image}`} key={image} />
+                ))}
+              </AlphaStack>
+            </AlphaStack>
           </FormControl>
           <Styled.Buttons>
-            <Button text="연결" />
-            <Button text="연결 해제" />
-            <Button text="사진 찍기" />
-            <Button text="설정 적용" />
+            <Button text="연결" onClick={() => connect()} loading={isConnecting} disabled={connected} />
+            <Button text="연결 해제" onClick={() => disconnect()} loading={isDisconnecting} disabled={!connected} />
+            <Button text="미리보기 시작" onClick={() => enablePreview()} disabled={!connected} />
+            <Button text="미리보기 중지" onClick={() => disablePreview()} disabled={!connected} />
+            <Button text="사진 찍기" onClick={() => capture()} disabled={!connected} />
           </Styled.Buttons>
         </Styled.Section>
         <Styled.Section>

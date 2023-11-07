@@ -21,7 +21,10 @@ export const Section = styled(AlphaStack).attrs({ direction: 'vertical', spacing
 export const Preview = styled.img`
   ${({ foundation }) => foundation?.rounding.round8}
   ${({ foundation }) => foundation?.elevation.ev3()}
+  background: ${({ foundation }) => foundation?.theme['bg-grey-dark']};
   width: 100%;
+  aspect-ratio: 3 / 2;
+  appearance: none;
 `;
 
 export const Buttons = styled(AlphaStack).attrs({ direction: 'horizontal', spacing: 8 })``;

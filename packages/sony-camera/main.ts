@@ -244,6 +244,7 @@ class SonyCamera extends EventEmitter {
           return;
         };
 
+        callback?.(null);
         this.processEvents(false, () => {
           this.connecting = false;
           callback?.(error);
@@ -420,4 +421,5 @@ class SonyCamera extends EventEmitter {
   }
 }
 
+module.exports = SonyCamera;
 export default SonyCamera;

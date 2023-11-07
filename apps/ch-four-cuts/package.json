@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ch-four-cuts/bezier-design-system": "workspace:^",
+    "@ch-four-cuts/sony-camera": "workspace:^",
     "@react-thermal-printer/image": "^0.11.1",
     "@resvg/resvg-js": "^2.6.0",
     "@tanstack/react-query": "^4",
@@ -22,7 +23,6 @@
     "express": "^4.18.2",
     "floyd-steinberg": "^1.0.6",
     "jotai": "^2.5.1",
-    "lodash": "^4.17.21",
     "node-thermal-printer": "^4.4.1",
     "pngjs": "^7.0.0",
     "printer": "^0.4.0",
@@ -32,6 +32,7 @@
     "react-dom": "^18.2.0",
     "react-thermal-printer": "^0.16.0",
     "satori": "^0.10.9",
+    "ws": "^8.14.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -45,12 +46,14 @@
     "@types/qrcode": "^1.5.4",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "@types/ws": "^8.5.8",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "@vitejs/plugin-react-swc": "^3.4.1",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
+    "lodash": "^4.17.21",
     "sirv": "^2.0.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
