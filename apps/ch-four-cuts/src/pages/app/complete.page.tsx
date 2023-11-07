@@ -1,8 +1,19 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { useSetAtom } from 'jotai';
+import { useEffect } from 'react';
+import { selectedImageAtom, sessionAtom } from '#/features/AppState';
 import * as Styled from './select.styled';
 
 function Page() {
+  const reset = useSetAtom(sessionAtom);
+  const resetSelectedImage = useSetAtom(selectedImageAtom);
+
+  useEffect(() => {
+    reset('');
+    resetSelectedImage([]);
+  }, [reset, resetSelectedImage]);
+
   return (
     <Styled.Container>
       <Styled.Wrapper>

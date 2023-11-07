@@ -17,8 +17,8 @@ function Page() {
   const [count, setCount] = useAtom(printerCountAtom);
   const [sessionId, setSessionId] = useAtom(sessionAtom);
 
-  if (!sessionId || sessionId === 'sessionTest') {
-    setSessionId(_.uniqueId('session'));
+  if (!sessionId) {
+    setSessionId('session' + _.toString(+new Date()));
   }
 
   return (

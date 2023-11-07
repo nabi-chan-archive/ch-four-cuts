@@ -2,7 +2,7 @@ import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-c
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
-import { sessionAtom } from '#/features/AppState';
+import { printerFrameAtom, sessionAtom } from '#/features/AppState';
 import { usePageContext } from '#/features/PageContext';
 import { trpc } from '#/utils/trpc';
 import * as Styled from './camera.styled';
@@ -14,7 +14,8 @@ function Page() {
   const trpcUtils = trpc.useUtils();
 
   const session = useAtomValue(sessionAtom);
-  const [counter, setCounter] = useState(20);
+  const frameId = useAtomValue(printerFrameAtom);
+  const [counter, setCounter] = useState(10);
   const [previewDataUrl, setPreviewDataUrl] = useState('');
   const [capturedImages, setCapturedImages] = useState<string[]>([]);
   const { data: connected } = trpc.camera.connected.useQuery();
@@ -36,6 +37,8 @@ function Page() {
     onData: setPreviewDataUrl,
   });
 
+  const MAX = frameId === 1 ? 3 : 6;
+
   useEffect(() => {
     enablePreview();
     return () => disablePreview();
@@ -52,7 +55,7 @@ function Page() {
             });
           }
 
-          return prev === 0 ? 20 : prev - 1;
+          return prev === 0 ? 10 : prev - 1;
         }),
       1000,
     );
@@ -61,14 +64,14 @@ function Page() {
   }, [capture, session]);
 
   useEffect(() => {
-    if (capturedImages.length >= 6) {
+    if (capturedImages.length >= MAX || !connected) {
       return;
     }
     const interval = spawnInterval();
     return () => {
       clearInterval(interval);
     };
-  }, [spawnInterval, capturedImages.length]);
+  }, [spawnInterval, capturedImages.length, connected, MAX]);
 
   if (!connected) {
     return (
@@ -85,7 +88,7 @@ function Page() {
     );
   }
 
-  if (capturedImages.length >= 6) {
+  if (capturedImages.length >= MAX) {
     return (
       <Styled.Container>
         <Styled.Wrapper>
@@ -110,7 +113,7 @@ function Page() {
       <Styled.Wrapper>
         <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <Text typo={Typography.Size36} bold marginTop={8}>
-          📸 {capturedImages.length + 1} / 6 번째 사진 찍는 중...
+          📸 {capturedImages.length + 1} / {MAX} 번째 사진 찍는 중...
         </Text>
         <Styled.CameraView displayLine={search.displayLine === 'true'}>
           <img src={`data:image/jpg;base64,${previewDataUrl}`} alt="" />

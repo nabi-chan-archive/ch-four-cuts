@@ -2,6 +2,7 @@ import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-c
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
+import { navigate } from 'vike/client/router';
 import { printerCountAtom, selectedImageAtom, sessionAtom } from '#/features/AppState';
 import { trpc } from '#/utils/trpc';
 import * as Styled from './select.styled';
@@ -13,19 +14,20 @@ function Page() {
   const selectedImages = useAtomValue(selectedImageAtom);
   const printCount = useAtomValue(printerCountAtom);
 
-  const { mutate: print, isIdle } = trpc.printer.frame.useMutation({
+  const { mutate: print } = trpc.printer.frame.useMutation({
     onSuccess: () => setPrintedCount((prev) => prev + 1),
+    retry: false,
   });
 
   useEffect(() => {
-    if (printedCount > printCount || !isIdle) {
+    if (printedCount >= printCount) {
       return;
     }
     print({
       sessionId,
       selectedImages,
     });
-  }, [isIdle, print, printCount, printedCount, selectedImages, sessionId]);
+  }, [print, printCount, printedCount, selectedImages, sessionId]);
 
   return (
     <Styled.Container>
@@ -38,7 +40,12 @@ function Page() {
           {printedCount} / {printCount} 장 프린트 하는 중...
         </Text>
 
-        <Button disabled={printedCount <= printCount} text="인쇄 완료!" size={ButtonSize.XL} />
+        <Button
+          disabled={printedCount < printCount}
+          onClick={() => navigate('/app/complete')}
+          text="인쇄 완료!"
+          size={ButtonSize.XL}
+        />
       </Styled.Wrapper>
     </Styled.Container>
   );

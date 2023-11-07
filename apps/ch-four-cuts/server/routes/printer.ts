@@ -1,4 +1,5 @@
 import { Resvg } from '@resvg/resvg-js';
+import { TRPCError } from '@trpc/server';
 import { mkdir, readdir } from 'fs/promises';
 import _ from 'lodash';
 import { PrinterTypes, ThermalPrinter } from 'node-thermal-printer';
@@ -14,6 +15,8 @@ const tp = new ThermalPrinter({
   driver: require('printer'),
 });
 
+let busy = false;
+
 export const printerRouter = router({
   test: publicProcedure.mutation(async () => {
     tp.println('Hello World!');
@@ -24,6 +27,14 @@ export const printerRouter = router({
   frame: publicProcedure
     .input(z.object({ sessionId: z.string(), selectedImages: z.array(z.string()) }))
     .mutation(async ({ input }) => {
+      if (busy) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Printer is busy',
+        });
+      }
+      busy = true;
+
       try {
         const listFiles = await readdir(resolve('public/images/input/' + input.sessionId));
         const footerSvg = await generateFooter({ qrcodeUrl: input.sessionId });
@@ -53,7 +64,8 @@ export const printerRouter = router({
         tp.printImageBuffer(footerImage);
 
         tp.cut();
-        tp.execute();
+        await tp.execute();
+        busy = false;
         return 'success';
       } catch (error) {
         console.log(error);
