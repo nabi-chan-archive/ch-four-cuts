@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import * as QRCODE from 'qrcode.react';
 import type { PropsWithChildren } from 'react';
 
 interface CoverProps {
@@ -40,8 +39,8 @@ interface FooterProps {
 export function Footer({ qrCodeLink }: FooterProps) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <svg width="100" height="40" viewBox="0 0 162 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <svg width="162" height="62" viewBox="0 0 162 62" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="62" height="62" rx="31" fill="black" />
           <path
             fillRule="evenodd"
@@ -58,7 +57,7 @@ export function Footer({ qrCodeLink }: FooterProps) {
         </svg>
         <span>{format(new Date(), 'yyyy-MM-dd HH:mm:ss')} @ Channel Talk</span>
       </div>
-      <QRCODE.QRCodeSVG value={qrCodeLink} size={60} />
+      <img style={{ width: 100, height: 100 }} src={qrCodeLink} alt="" />
     </div>
   );
 }
