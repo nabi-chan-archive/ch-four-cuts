@@ -1,23 +1,119 @@
-import { Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
+import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import _ from 'lodash';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePageContext } from '#/features/PageContext';
+import { trpc } from '#/utils/trpc';
 import * as Styled from './camera.styled';
 
 function Page() {
   const {
     urlParsed: { search },
   } = usePageContext();
+  const session = useMemo(() => _.toString(+new Date()), []);
+  const trpcUtils = trpc.useUtils();
+
+  const [counter, setCounter] = useState(20);
+  const [previewDataUrl, setPreviewDataUrl] = useState('');
+  const [capturedImages, setCapturedImages] = useState<string[]>([]);
+  const { data: connected } = trpc.camera.connected.useQuery();
+
+  const { mutate: connect, isLoading } = trpc.camera.connect.useMutation({
+    onSuccess: () => {
+      trpcUtils.camera.connected.invalidate();
+    },
+  });
+  const { mutate: enablePreview } = trpc.camera.enablePreview.useMutation();
+  const { mutate: disablePreview } = trpc.camera.disablePreview.useMutation();
+  const { mutate: capture } = trpc.camera.capture.useMutation({
+    onSuccess(data) {
+      setCapturedImages((prev) => [...prev, data.filePath]);
+    },
+  });
+  trpc.camera.preview.useSubscription(undefined, {
+    enabled: connected,
+    onData: setPreviewDataUrl,
+  });
+
+  useEffect(() => {
+    enablePreview();
+    return () => disablePreview();
+  }, [disablePreview, enablePreview]);
+
+  const spawnInterval = useCallback(() => {
+    const interval = setInterval(
+      () =>
+        setCounter((prev) => {
+          if (prev === 0) {
+            clearInterval(interval);
+            capture({
+              sessionId: session,
+            });
+          }
+
+          return prev === 0 ? 20 : prev - 1;
+        }),
+      1000,
+    );
+
+    return interval;
+  }, [capture, session]);
+
+  useEffect(() => {
+    if (capturedImages.length >= 6) {
+      return;
+    }
+    const interval = spawnInterval();
+    return () => {
+      clearInterval(interval);
+    };
+  }, [spawnInterval, capturedImages.length]);
+
+  if (!connected) {
+    return (
+      <Styled.Container>
+        <Styled.Wrapper>
+          <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+          <Text typo={Typography.Size36} bold marginTop={8}>
+            오류가 발생했어요!
+          </Text>
+          <Text typo={Typography.Size22}>카메라가 연결되어있지 않아요.</Text>
+          <Button onClick={() => connect()} text="재연결" loading={isLoading} size={ButtonSize.XL} />
+        </Styled.Wrapper>
+      </Styled.Container>
+    );
+  }
+
+  if (capturedImages.length + 1 >= 6) {
+    return (
+      <Styled.Container>
+        <Styled.Wrapper>
+          <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+          <Text typo={Typography.Size36} bold marginTop={8}>
+            사진 촬영 완료!
+          </Text>
+          <Text typo={Typography.Size22} marginBottom={24}>
+            다음 버튼을 눌러 인쇄할 이미지를 선택해주세요!
+          </Text>
+
+          <a href="/app/select">
+            <Button text="다음" size={ButtonSize.XL} />
+          </a>
+        </Styled.Wrapper>
+      </Styled.Container>
+    );
+  }
 
   return (
     <Styled.Container>
       <Styled.Wrapper>
         <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <Text typo={Typography.Size36} bold marginTop={8}>
-          📸 1 / 6 번째 사진 찍는 중...
+          📸 {capturedImages.length + 1} / 6 번째 사진 찍는 중...
         </Text>
         <Styled.CameraView displayLine={search.displayLine === 'true'}>
-          <img src="https://placekitten.com/1920/1080" alt="" />
-          <Styled.CameraCounter>{20}</Styled.CameraCounter>
+          <img src={`data:image/jpg;base64,${previewDataUrl}`} alt="" />
+          <Styled.CameraCounter>{counter}</Styled.CameraCounter>
         </Styled.CameraView>
       </Styled.Wrapper>
     </Styled.Container>

@@ -103,21 +103,24 @@ export const cameraRouter = router({
         .optional(),
     )
     .mutation(({ input }) => {
-      return new Promise<string>((done, reject) => {
+      return new Promise<{ bufferString: string; filePath: string }>((done, reject) => {
         camera.capture(false, (error, photoName, buffer) => {
           if (error) {
             return reject(error);
           }
 
           const savePath = input?.sessionId
-            ? `public/image/input/${input.sessionId}/${photoName}`
+            ? `public/images/input/${input.sessionId}/${photoName}`
             : input?.outputUrl
             ? `${input.outputUrl}/${photoName}`
             : `public/images/${photoName}`;
 
           convertJpgToPng(buffer, savePath);
 
-          done(buffer.toString('base64'));
+          done({
+            bufferString: buffer.toString('base64'),
+            filePath: `${savePath.split('.JPG')[0]}.png`,
+          });
         });
       });
     }),
