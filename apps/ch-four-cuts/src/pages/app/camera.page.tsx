@@ -1,7 +1,8 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
-import _ from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import { useCallback, useEffect, useState } from 'react';
+import { sessionAtom } from '#/features/AppState';
 import { usePageContext } from '#/features/PageContext';
 import { trpc } from '#/utils/trpc';
 import * as Styled from './camera.styled';
@@ -10,9 +11,9 @@ function Page() {
   const {
     urlParsed: { search },
   } = usePageContext();
-  const session = useMemo(() => _.toString(+new Date()), []);
   const trpcUtils = trpc.useUtils();
 
+  const session = useAtomValue(sessionAtom);
   const [counter, setCounter] = useState(20);
   const [previewDataUrl, setPreviewDataUrl] = useState('');
   const [capturedImages, setCapturedImages] = useState<string[]>([]);
@@ -47,7 +48,7 @@ function Page() {
           if (prev === 0) {
             clearInterval(interval);
             capture({
-              sessionId: session,
+              sessionId: session ?? '',
             });
           }
 
@@ -84,7 +85,7 @@ function Page() {
     );
   }
 
-  if (capturedImages.length + 1 >= 6) {
+  if (capturedImages.length >= 6) {
     return (
       <Styled.Container>
         <Styled.Wrapper>

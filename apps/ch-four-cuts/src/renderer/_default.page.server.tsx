@@ -3,7 +3,6 @@ export const passToClient = ['pageProps', 'dehydratedState'];
 
 import { ServerStyleSheet } from '@ch-four-cuts/bezier-design-system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createWSClient, httpBatchLink, loggerLink, wsLink } from '@trpc/react-query';
 import ReactDOMServer from 'react-dom/server';
 import { dangerouslySkipEscape, escapeInject } from 'vike/server';
 import ws from 'ws';
@@ -21,11 +20,8 @@ async function render(pageContext: PageContextServer) {
   if (!Page) throw new Error('My render() hook expects pageContext.Page to be defined');
   const sheet = new ServerStyleSheet();
   const queryClient = new QueryClient();
-  const wsClient = createWSClient({
-    url: 'wss://localhost:3000',
-  });
   const trpcClient = trpc.createClient({
-    links: [loggerLink(), httpBatchLink({ url: '/trpc' }), wsLink({ client: wsClient })],
+    links: [],
   });
 
   const pageHtml = ReactDOMServer.renderToString(

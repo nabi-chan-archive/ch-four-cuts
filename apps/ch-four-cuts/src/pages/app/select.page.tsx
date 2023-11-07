@@ -1,8 +1,16 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { useAtom, useAtomValue } from 'jotai';
+import { navigate } from 'vike/client/router';
+import { selectedImageAtom, sessionAtom } from '#/features/AppState';
+import { trpc } from '#/utils/trpc';
 import * as Styled from './select.styled';
 
 function Page() {
+  const sessionId = useAtomValue(sessionAtom);
+  const [selectedImage, setSelectedImage] = useAtom(selectedImageAtom);
+  const { data: imageList } = trpc.session.images.useQuery({ sessionId });
+
   return (
     <Styled.Container>
       <Styled.Wrapper>
@@ -12,15 +20,26 @@ function Page() {
         </Text>
 
         <Styled.PhotoGrid>
-          <Styled.Photo src="https://placekitten.com/600/400" selected />
-          <Styled.Photo src="https://placekitten.com/600/400" />
-          <Styled.Photo src="https://placekitten.com/600/400" selected />
-          <Styled.Photo src="https://placekitten.com/600/400" selected />
-          <Styled.Photo src="https://placekitten.com/600/400" />
-          <Styled.Photo src="https://placekitten.com/600/400" />
+          {imageList?.map((image) => (
+            <Styled.Photo
+              src={`/public/images/input/${sessionId}/${image}`}
+              key={image}
+              selected={selectedImage.includes(image)}
+              onClick={() =>
+                setSelectedImage((prev) =>
+                  prev.includes(image) ? prev.filter((i) => i !== image) : prev.length >= 4 ? prev : [...prev, image],
+                )
+              }
+            />
+          ))}
         </Styled.PhotoGrid>
 
-        <Button disabled text="3 / 4 장 선택됨" size={ButtonSize.XL} />
+        <Button
+          disabled={selectedImage.length < 4}
+          text={selectedImage.length < 4 ? `${selectedImage.length} / 4 장 선택됨` : '인쇄하기 '}
+          onClick={() => navigate('/app/printing')}
+          size={ButtonSize.XL}
+        />
       </Styled.Wrapper>
     </Styled.Container>
   );

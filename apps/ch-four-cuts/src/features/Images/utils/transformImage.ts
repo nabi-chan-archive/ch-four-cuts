@@ -1,6 +1,6 @@
 import { createCanvas, loadImage } from 'canvas';
 import transformer from 'floyd-steinberg';
-import { readFile, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { PNG } from 'pngjs';
 
@@ -8,12 +8,10 @@ export async function transformImage(
   filename: string,
   input = '/public/images/input',
   output = '/public/images/output',
+  { width = 600, height = 400 },
 ) {
   const inputPath = resolve(input, filename);
   const outputPath = resolve(output, filename);
-
-  const originalImageBuffer = await readFile(inputPath);
-  const { width, height } = PNG.sync.read(originalImageBuffer);
 
   const canvas = createCanvas(width, height);
   const context = canvas.getContext('2d');
