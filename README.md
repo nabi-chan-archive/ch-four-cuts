@@ -15,6 +15,7 @@
 | [**@ch-four-cuts/configs**](./packages/configs/README.md)                           | eslint, prettier 설정 모음  |
 | [**@ch-four-cuts/tsconfig**](./packages/tsconfig/README.md)                         | 전역 tsconfig 설정          |
 | [**@ch-four-cuts/bezier-design-system**](./packages/bezier-design-system/README.md) | 디자인 시스템 관련 코드뭉치 |
+| [**@ch-four-cuts/sony-camera**](./packages/sony-camera/README.md)                   | 소니 카메라 관련 라이브러리 |
 
 ## Commit convention
 
@@ -26,3 +27,24 @@
 - perf: 코드의 성능을 개선하는 수정사항
 - test: 새롭게 테스트를 추가하거나 변경
 - chore: 패키지 매니저 수정, 설정 파일 수정과 같이 설정과 관련된 수정사항
+
+## System Requirements
+
+- nodeJS 18.x | 20.x
+- Python 2.x (depends on [`printer`](https://www.npmjs.com/package/printer) package @ ch-four-cuts)
+
+## Pre-Installation
+
+> depends on [`canvas`](https://www.npmjs.com/package/canvas) package @ ch-four-cuts
+
+### MacOS
+
+```bash
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+```
+
+### Ubuntu
+
+```bash
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+```
