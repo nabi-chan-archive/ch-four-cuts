@@ -421,5 +421,7 @@ class SonyCamera extends EventEmitter {
   }
 }
 
-module.exports = SonyCamera;
+if (typeof module !== 'undefined') {
+  module.exports = SonyCamera;
+}
 export default SonyCamera;
