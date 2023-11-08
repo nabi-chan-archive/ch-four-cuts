@@ -15,7 +15,8 @@
     "lint:eslint": "eslint --max-warnings 0 .",
     "lint:prettier": "prettier --check --ignore-unknown '**/*'",
     "lint:spellcheck": "cspell --no-progress --relative '**/*'",
-    "pre-commit": "lint-staged --verbose --no-stash"
+    "pre-commit": "lint-staged --verbose --no-stash",
+    "start": "turbo run start"
   },
   "devDependencies": {
     "@ch-four-cuts/configs": "workspace:*",
