@@ -31,7 +31,7 @@ async function render(pageContext: PageContextServer) {
       splitLink({
         condition: (op) => op.type === 'subscription',
         true: wsLink({ client: wsClient }),
-        false: httpBatchLink({ url: `https://${import.meta.env.VITE_TRPC_HOST}:3000/trpc` }),
+        false: httpBatchLink({ url: `https://${import.meta.env.VITE_TRPC_HOST}/trpc` }),
       }),
     ],
   });
