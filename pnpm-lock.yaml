@@ -131,6 +131,9 @@ importers:
       '@types/pngjs':
         specifier: ^6.0.3
         version: 6.0.3
+      '@types/printer':
+        specifier: ^0.4.5
+        version: 0.4.5
       '@types/qrcode':
         specifier: ^1.5.4
         version: 1.5.4
@@ -3437,6 +3440,13 @@ packages:
   /@types/pngjs@6.0.3:
     resolution:
       { integrity: sha512-F/WaGVKEZ1XYFlEtsWtqWm92vRfQdOqSSTBPj07BRDKnDtRhCw50DpwEQtrrDwEZUoAZAzv2FaalZiNV/54BoQ== }
+    dependencies:
+      '@types/node': 20.8.10
+    dev: true
+
+  /@types/printer@0.4.5:
+    resolution:
+      { integrity: sha512-cl2aJE2aHSjpNJhgeqvIGqNbonMTu2VbxrByLolLXVT26ynVIxXh6xYsxAOFyU1GVcAheUph6MsB+ogSzdjrrA== }
     dependencies:
       '@types/node': 20.8.10
     dev: true
