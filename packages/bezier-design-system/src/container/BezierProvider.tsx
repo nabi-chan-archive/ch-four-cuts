@@ -3,6 +3,7 @@ import {
   DarkFoundation,
   type Foundation,
   LightFoundation,
+  ToastProvider,
 } from '@channel.io/bezier-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -23,8 +24,10 @@ function BezierProvider({ children }: BezierProviderProps) {
 
   return (
     <BaseBezierProvider foundation={foundation}>
-      <GlobalStyles foundation={foundation} />
-      {children}
+      <ToastProvider>
+        <GlobalStyles foundation={foundation} />
+        {children}
+      </ToastProvider>
     </BaseBezierProvider>
   );
 }
