@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./ch-four-cuts.db"
+}
+
+model Config {
+  configuredAt DateTime @unique @default(now()) @map("configured_at")
+
+  printerType String @map("printer_type")
+
+  // Connect USB
+  printerName String? @map("printer_name")
+
+  // Connect Network
+  printerIp   String? @map("printer_ip")
+  printerPort Int?    @map("printer_port")
+}
+
+model Session {
+  sessionId String @id @default(uuid()) @map("session_id")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  // 프레임 타입
+  frameType    String   @map("frame_type")
+  // 인쇄한 사진 개수
+  printedCount Int      @default(0) @map("printed_count")
+}
