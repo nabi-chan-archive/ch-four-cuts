@@ -1,0 +1,27 @@
+{
+  "name": "@ch-four-cuts/viewer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "start": "serve dist"
+  },
+  "dependencies": {
+    "@ch-four-cuts/bezier-design-system": "workspace:^",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "serve": "^14.2.1"
+  },
+  "devDependencies": {
+    "@ch-four-cuts/tsconfig": "workspace:^",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}
