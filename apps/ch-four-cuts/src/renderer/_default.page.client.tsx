@@ -11,7 +11,7 @@ let root: Root;
 
 const queryClient = new QueryClient();
 const wsClient = createWSClient({
-  url: 'wss://localhost:3000',
+  url: 'wss://172.20.10.4:3000',
 });
 const trpcClient = trpc.createClient({
   links: [
@@ -19,7 +19,7 @@ const trpcClient = trpc.createClient({
     splitLink({
       condition: (op) => op.type === 'subscription',
       true: wsLink({ client: wsClient }),
-      false: httpBatchLink({ url: 'https://localhost:3000/trpc' }),
+      false: httpBatchLink({ url: 'https://172.20.10.4:3000/trpc' }),
     }),
   ],
 });

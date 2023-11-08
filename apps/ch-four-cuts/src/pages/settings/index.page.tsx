@@ -22,6 +22,7 @@ function Page() {
   const [capturedImages, setCapturedImages] = useState<string[]>([]);
 
   const { data: connected } = trpc.camera.connected.useQuery();
+  const { data: printerConnected } = trpc.printer.connected.useQuery();
   const { data: params } = trpc.camera.params.useQuery();
   const { mutate: connect, isLoading: isConnecting } = trpc.camera.connect.useMutation({
     onSuccess: () => {
@@ -34,7 +35,7 @@ function Page() {
   const { mutate: disablePreview } = trpc.camera.disablePreview.useMutation();
   const { mutate: capture } = trpc.camera.capture.useMutation({
     onSuccess(data) {
-      setCapturedImages((prev) => [...prev, data]);
+      setCapturedImages((prev) => [...prev, data.bufferString]);
     },
   });
   trpc.camera.info.useSubscription(undefined, {
@@ -51,6 +52,22 @@ function Page() {
     enabled: connected,
     onData: setPreviewDataUrl,
   });
+
+  const { data: sessionList } = trpc.settings.sessionList.useQuery(undefined, {
+    refetchOnWindowFocus: true,
+    cacheTime: 0,
+  });
+  const [sessionId, setSessionId] = useState(sessionList?.[0] ?? '');
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const { data: sessionDetail } = trpc.settings.sessionDetail.useQuery({ sessionId });
+
+  const { mutate: print } = trpc.printer.frame.useMutation();
+  function handleForcePrint() {
+    print({
+      sessionId,
+      selectedImages,
+    });
+  }
 
   return (
     <Styled.Container>
@@ -119,7 +136,9 @@ function Page() {
                 연결 상태
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14}>연결 되어있음</Text>
+            <Text typo={Typography.Size14} color={printerConnected ? 'bgtxt-green-normal' : 'bgtxt-yellow-normal'}>
+              {printerConnected ? '연결되어있음' : '연결되어있지않음'}
+            </Text>
           </FormControl>
 
           <Styled.Buttons>
@@ -133,7 +152,7 @@ function Page() {
           <FormControl labelPosition="left">
             <FormLabel>
               <Text typo={Typography.Size14} bold>
-                지금까지 찍은 사진
+                세션 수
               </Text>
             </FormLabel>
             <Text typo={Typography.Size14}>300건</Text>
@@ -160,19 +179,46 @@ function Page() {
                 인쇄할 사진 ID
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14}>
+            <AlphaStack direction="vertical" spacing={8}>
               <Select
                 dropdownInterpolation={Styled.DropdownInterpolation}
+                text={sessionId}
                 placeholder="강제 인쇄할 사진의 ID를 선택해주세요"
               >
-                <ListItem content="11-10 22:32 / 4컷" />
-                <ListItem content="11-10 22:31 / 4컷" />
+                {sessionList?.map((session) => (
+                  <ListItem
+                    content={session}
+                    key={session}
+                    onClick={() => {
+                      setSessionId(session);
+                      setSelectedImages([]);
+                    }}
+                  />
+                ))}
               </Select>
-            </Text>
+              <AlphaStack direction="horizontal" spacing={8} style={{ flexWrap: 'wrap' }}>
+                {sessionDetail?.map((image) => (
+                  <img
+                    style={{
+                      width: 200,
+                      borderRadius: 16,
+                      border: selectedImages.includes(image) ? '2px solid red' : '',
+                    }}
+                    src={`images/input/${sessionId}/${image}`}
+                    key={image}
+                    onClick={() => {
+                      setSelectedImages((prev) =>
+                        prev.includes(image) ? prev.filter((i) => i !== image) : [...prev, image],
+                      );
+                    }}
+                  />
+                ))}
+              </AlphaStack>
+            </AlphaStack>
           </FormControl>
 
           <Styled.Buttons>
-            <Button text="선택한 사진 1장 인쇄하기" />
+            <Button text="선택한 사진 1장 인쇄하기" onClick={handleForcePrint} />
           </Styled.Buttons>
         </Styled.Section>
       </AlphaStack>

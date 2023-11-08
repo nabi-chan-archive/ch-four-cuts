@@ -34,7 +34,8 @@ export const CameraView = styled.div<{ displayLine?: boolean }>`
   position: relative;
 
   img {
-    min-width: 1300px;
+    transform: rotateY('180deg');
+    min-width: 1000px;
     width: 100%;
   }
 
@@ -47,7 +48,7 @@ export const CameraCounter = styled(Text).attrs({ bold: true })`
   line-height: 100px;
   z-index: 1;
   right: 30px;
-  bottom: 30px;
+  top: 30px;
   width: 100px;
   height: 100px;
   text-align: center;

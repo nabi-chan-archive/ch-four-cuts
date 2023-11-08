@@ -21,22 +21,24 @@ function Page() {
         </Text>
 
         <Styled.PhotoGrid>
-          {imageList?.map((image) => (
-            <Styled.Photo
-              src={`/public/images/input/${sessionId}/${image}`}
-              key={image}
-              selected={selectedImage.includes(image)}
-              onClick={() =>
-                setSelectedImage((prev) =>
-                  prev.includes(image)
-                    ? prev.filter((i) => i !== image)
-                    : prev.length >= frameId
-                    ? prev
-                    : [...prev, image],
-                )
-              }
-            />
-          ))}
+          {imageList
+            ?.slice(0, 6)
+            .map((image) => (
+              <Styled.Photo
+                src={`/public/images/input/${sessionId}/${image}`}
+                key={image}
+                selected={selectedImage.includes(image)}
+                onClick={() =>
+                  setSelectedImage((prev) =>
+                    prev.includes(image)
+                      ? prev.filter((i) => i !== image)
+                      : prev.length >= frameId
+                      ? prev
+                      : [...prev, image],
+                  )
+                }
+              />
+            ))}
         </Styled.PhotoGrid>
 
         <Button

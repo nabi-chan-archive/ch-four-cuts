@@ -48,14 +48,16 @@ function Page() {
     const interval = setInterval(
       () =>
         setCounter((prev) => {
-          if (prev === 0) {
-            clearInterval(interval);
+          if (prev === 1) {
             capture({
               sessionId: session ?? '',
             });
           }
+          if (prev === 0) {
+            clearInterval(interval);
+          }
 
-          return prev === 0 ? 10 : prev - 1;
+          return prev === 0 ? 5 : prev - 1;
         }),
       1000,
     );
@@ -116,7 +118,7 @@ function Page() {
           📸 {capturedImages.length + 1} / {MAX} 번째 사진 찍는 중...
         </Text>
         <Styled.CameraView displayLine={search.displayLine === 'true'}>
-          <img src={`data:image/jpg;base64,${previewDataUrl}`} alt="" />
+          <img src={`data:image/jpg;base64,${previewDataUrl}`} style={{ transform: 'rotateY(180deg)' }} alt="" />
           <Styled.CameraCounter>{counter}</Styled.CameraCounter>
         </Styled.CameraView>
       </Styled.Wrapper>

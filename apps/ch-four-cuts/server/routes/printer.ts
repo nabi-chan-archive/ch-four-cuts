@@ -18,6 +18,12 @@ const tp = new ThermalPrinter({
 let busy = false;
 
 export const printerRouter = router({
+  connected: publicProcedure.query(() => tp.isPrinterConnected()),
+  cut: publicProcedure.mutation(async () => {
+    tp.cut();
+    await tp.execute();
+    return 'success';
+  }),
   test: publicProcedure.mutation(async () => {
     tp.println('Hello World!');
     tp.cut();
