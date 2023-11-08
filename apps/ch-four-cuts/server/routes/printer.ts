@@ -8,39 +8,57 @@ import { z } from 'zod';
 import { generateFooter } from '#/features/Frame/server/generateFooter';
 import { transformImage } from '#/features/Images/utils/transformImage';
 import { publicProcedure, router } from '#/server/trpc';
+import prisma from '#/utils/prisma.server';
 
-const tp = new ThermalPrinter({
-  type: PrinterTypes.EPSON,
-  interface: 'printer:BIXOLON_SRP_330II',
-  driver: require('printer'),
-});
-
-let busy = false;
+let printer: ThermalPrinter;
 
 export const printerRouter = router({
-  connected: publicProcedure.query(() => tp.isPrinterConnected()),
-  cut: publicProcedure.mutation(async () => {
-    tp.cut();
-    await tp.execute();
-    return 'success';
+  connected: publicProcedure.query(() => {
+    try {
+      return printer.isPrinterConnected();
+    } catch {
+      return false;
+    }
   }),
-  test: publicProcedure.mutation(async () => {
-    tp.println('Hello World!');
-    tp.cut();
-    tp.execute();
-    return 'success';
+  connect: publicProcedure.mutation(async () => {
+    try {
+      const config = await prisma.config.findFirst();
+      if (!config) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: '프린터 설정이 필요합니다.',
+        });
+      }
+      if (config?.printerType === 'USB') {
+        printer = new ThermalPrinter({
+          type: PrinterTypes.EPSON,
+          interface: `printer:${config.printerName}`,
+          driver: require('printer'),
+        });
+        return { success: true };
+      }
+      if (config?.printerType === 'NETWORK') {
+        printer = new ThermalPrinter({
+          type: PrinterTypes.EPSON,
+          interface: `tcp://${config.printerIp}:${config.printerPort}`,
+        });
+        return { success: true };
+      }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error;
+      }
+      console.log(error);
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: '프린터 연결에 실패했습니다.',
+        cause: error,
+      });
+    }
   }),
   frame: publicProcedure
     .input(z.object({ sessionId: z.string(), selectedImages: z.array(z.string()) }))
     .mutation(async ({ input }) => {
-      if (busy) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Printer is busy',
-        });
-      }
-      busy = true;
-
       try {
         const listFiles = await readdir(resolve('public/images/input/' + input.sessionId));
         const footerSvg = await generateFooter({ qrcodeUrl: input.sessionId });
@@ -61,23 +79,27 @@ export const printerRouter = router({
                   height: 400,
                 },
               );
-              tp.printImageBuffer(buffer);
-              tp.println('');
+              printer.printImageBuffer(buffer);
+              printer.println('');
             }),
         );
 
         const footerImage = new Resvg(footerSvg, { dpi: 180 }).render().asPng();
-        tp.printImageBuffer(footerImage);
+        printer.printImageBuffer(footerImage);
 
-        tp.cut();
-        await tp.execute();
-        busy = false;
-        return 'success';
+        printer.cut();
+        await printer.execute();
+        return { success: true };
       } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
         console.log(error);
-        throw error;
-      } finally {
-        tp.clear();
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: '프린터 인쇄에 실패했습니다.',
+          cause: error,
+        });
       }
     }),
 });

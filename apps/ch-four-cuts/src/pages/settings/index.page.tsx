@@ -11,63 +11,35 @@ import {
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { format } from 'date-fns';
 import _ from 'lodash';
-import { useState } from 'react';
-import { trpc } from '#/utils/trpc';
+import { useSettingsQuery } from '#/features/Settings/queries/useSettingsQuery';
 import * as Styled from './index.styled';
 
 function Page() {
-  const utils = trpc.useUtils();
-  const [previewDataUrl, setPreviewDataUrl] = useState('');
-  const [capturedImages, setCapturedImages] = useState<string[]>([]);
+  const {
+    previewDataUrl,
 
-  const { data: connected } = trpc.camera.connected.useQuery();
-  const { data: printerConnected } = trpc.printer.connected.useQuery();
-  const { data: params } = trpc.camera.params.useQuery();
-  const { mutate: connect, isLoading: isConnecting } = trpc.camera.connect.useMutation({
-    onSuccess: () => {
-      utils.camera.connected.invalidate();
-      utils.camera.params.invalidate();
-    },
-  });
-  const { mutate: disconnect, isLoading: isDisconnecting } = trpc.camera.disconnect.useMutation();
-  const { mutate: enablePreview } = trpc.camera.enablePreview.useMutation();
-  const { mutate: disablePreview } = trpc.camera.disablePreview.useMutation();
-  const { mutate: capture } = trpc.camera.capture.useMutation({
-    onSuccess(data) {
-      setCapturedImages((prev) => [...prev, data.bufferString]);
-    },
-  });
-  trpc.camera.info.useSubscription(undefined, {
-    enabled: connected,
-    onData: (data) => {
-      if (_.get(data as { connected: boolean }, 'connected') === true) {
-        utils.camera.connected.invalidate();
-        utils.camera.params.invalidate();
-      }
-      utils.camera.params.invalidate();
-    },
-  });
-  trpc.camera.preview.useSubscription(undefined, {
-    enabled: connected,
-    onData: setPreviewDataUrl,
-  });
+    sessionId,
+    handleSetSessionId,
 
-  const { data: sessionList } = trpc.settings.sessionList.useQuery(undefined, {
-    refetchOnWindowFocus: true,
-    cacheTime: 0,
-  });
-  const [sessionId, setSessionId] = useState(sessionList?.[0] ?? '');
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const { data: sessionDetail } = trpc.settings.sessionDetail.useQuery({ sessionId });
+    cameraConnected,
+    cameraConnect,
+    cameraDisconnect,
+    cameraEnablePreview,
+    cameraDisablePreview,
 
-  const { mutate: print } = trpc.printer.frame.useMutation();
-  function handleForcePrint() {
-    print({
-      sessionId,
-      selectedImages,
-    });
-  }
+    sessionList,
+    sessionDetail,
+
+    printerConnect,
+    printerConnected,
+    printerCount,
+
+    selectedImages,
+    handleClickThumbnail,
+    handleForcePrint,
+  } = useSettingsQuery();
 
   return (
     <Styled.Container>
@@ -91,17 +63,9 @@ function Page() {
                 연결 상태
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14} color={connected ? 'bgtxt-green-normal' : 'bgtxt-yellow-normal'}>
-              {connected ? '연결되어있음' : '연결되어있지않음'}
+            <Text typo={Typography.Size14} color={cameraConnected.data ? 'bgtxt-green-normal' : 'bgtxt-yellow-normal'}>
+              {cameraConnected.data ? '연결되어있음' : '연결되어있지않음'}
             </Text>
-          </FormControl>
-          <FormControl labelPosition="left">
-            <FormLabel>
-              <Text typo={Typography.Size14} bold>
-                남은 카메라 장수
-              </Text>
-            </FormLabel>
-            <Text typo={Typography.Size14}>{params?.photosRemaining ?? 0}</Text>
           </FormControl>
           <FormControl labelPosition="left">
             <FormLabel>
@@ -110,20 +74,38 @@ function Page() {
               </Text>
             </FormLabel>
             <AlphaStack direction="vertical" spacing={16}>
-              <Styled.Preview src={`data:image/png;base64,${previewDataUrl}`} alt="연결이 되어있지 않습니다." />
-              <AlphaStack direction="horizontal" spacing={16} style={{ overflowX: 'auto' }}>
-                {capturedImages.map((image) => (
-                  <img style={{ width: 200, borderRadius: 16 }} src={`data:image/png;base64,${image}`} key={image} />
-                ))}
-              </AlphaStack>
+              {previewDataUrl ? (
+                <Styled.Preview src={`${previewDataUrl}`} alt="" />
+              ) : (
+                '카메라가 연결되지 않았거나, 미리보기가 없습니다.'
+              )}
             </AlphaStack>
           </FormControl>
           <Styled.Buttons>
-            <Button text="연결" onClick={() => connect()} loading={isConnecting} disabled={connected} />
-            <Button text="연결 해제" onClick={() => disconnect()} loading={isDisconnecting} disabled={!connected} />
-            <Button text="미리보기 시작" onClick={() => enablePreview()} disabled={!connected} />
-            <Button text="미리보기 중지" onClick={() => disablePreview()} disabled={!connected} />
-            <Button text="사진 찍기" onClick={() => capture()} disabled={!connected} />
+            <Button
+              text="연결"
+              onClick={() => cameraConnect.mutate()}
+              loading={cameraConnect.isLoading}
+              disabled={cameraConnected.data}
+            />
+            <Button
+              text="연결 해제"
+              onClick={() => cameraDisconnect.mutate()}
+              loading={cameraDisconnect.isLoading}
+              disabled={!cameraConnect.data}
+            />
+            <Button
+              text="미리보기 시작"
+              onClick={() => cameraEnablePreview.mutate()}
+              loading={cameraEnablePreview.isLoading}
+              disabled={!cameraConnect.data}
+            />
+            <Button
+              text="미리보기 중지"
+              onClick={() => cameraDisablePreview.mutate()}
+              loading={cameraDisablePreview.isLoading}
+              disabled={!cameraConnect.data}
+            />
           </Styled.Buttons>
         </Styled.Section>
         <Styled.Section>
@@ -136,18 +118,22 @@ function Page() {
                 연결 상태
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14} color={printerConnected ? 'bgtxt-green-normal' : 'bgtxt-yellow-normal'}>
-              {printerConnected ? '연결되어있음' : '연결되어있지않음'}
+            <Text typo={Typography.Size14} color={printerConnected.data ? 'bgtxt-green-normal' : 'bgtxt-yellow-normal'}>
+              {printerConnected.data ? '연결되어있음' : '연결되어있지않음'}
             </Text>
           </FormControl>
-
           <Styled.Buttons>
-            <Button text="용지 자르기" />
+            <Button
+              text="연결"
+              onClick={() => printerConnect.mutate()}
+              loading={printerConnect.isLoading}
+              disabled={printerConnected.data}
+            />
           </Styled.Buttons>
         </Styled.Section>
         <Styled.Section>
           <Text typo={Typography.Size24} bold>
-            결과물
+            통계
           </Text>
           <FormControl labelPosition="left">
             <FormLabel>
@@ -155,7 +141,7 @@ function Page() {
                 세션 수
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14}>300건</Text>
+            <Text typo={Typography.Size14}>{sessionList.data?.length ?? 0}</Text>
           </FormControl>
           <FormControl labelPosition="left">
             <FormLabel>
@@ -163,54 +149,46 @@ function Page() {
                 지금까지 인쇄한 종이
               </Text>
             </FormLabel>
-            <Text typo={Typography.Size14}>1200장</Text>
+            <Text typo={Typography.Size14}>{_.toString(printerCount.data?._sum.printedCount ?? 0)}</Text>
           </FormControl>
           <FormControl labelPosition="left">
             <FormLabel>
               <Text typo={Typography.Size14} bold>
-                마지막으로 인쇄된 시간
-              </Text>
-            </FormLabel>
-            <Text typo={Typography.Size14}>2023-11-11 23:12:30</Text>
-          </FormControl>
-          <FormControl labelPosition="left">
-            <FormLabel>
-              <Text typo={Typography.Size14} bold>
-                인쇄할 사진 ID
+                인쇄할 세션 ID
               </Text>
             </FormLabel>
             <AlphaStack direction="vertical" spacing={8}>
               <Select
                 dropdownInterpolation={Styled.DropdownInterpolation}
                 text={sessionId}
-                placeholder="강제 인쇄할 사진의 ID를 선택해주세요"
+                placeholder="인쇄할 세션을 선택해주세요"
               >
-                {sessionList?.map((session) => (
+                {!sessionList.data?.length && <ListItem content="세션이 없습니다." disabled />}
+                {sessionList.data?.map((session) => (
                   <ListItem
-                    content={session}
-                    key={session}
-                    onClick={() => {
-                      setSessionId(session);
-                      setSelectedImages([]);
-                    }}
+                    leftIcon={ChannelBtnSmileFilledIcon}
+                    content={session.sessionId}
+                    rightContent={
+                      format(new Date(session.createdAt), 'yyyy-MM-dd HH:mm:ss') + `, ${session.frameType}컷`
+                    }
+                    key={session.sessionId}
+                    onClick={() => handleSetSessionId(session.sessionId)}
                   />
                 ))}
               </Select>
               <AlphaStack direction="horizontal" spacing={8} style={{ flexWrap: 'wrap' }}>
-                {sessionDetail?.map((image) => (
+                {sessionDetail.data?.filenames.map((filename) => (
                   <img
                     style={{
                       width: 200,
                       borderRadius: 16,
-                      border: selectedImages.includes(image) ? '2px solid red' : '',
+                      border: selectedImages.includes(filename)
+                        ? '4px solid var(--bgtxt-purple-normal)'
+                        : '4px solid transparent',
                     }}
-                    src={`images/input/${sessionId}/${image}`}
-                    key={image}
-                    onClick={() => {
-                      setSelectedImages((prev) =>
-                        prev.includes(image) ? prev.filter((i) => i !== image) : [...prev, image],
-                      );
-                    }}
+                    src={`images/input/${sessionId}/${filename}`}
+                    key={filename}
+                    onClick={() => handleClickThumbnail(filename)}
                   />
                 ))}
               </AlphaStack>
@@ -218,7 +196,11 @@ function Page() {
           </FormControl>
 
           <Styled.Buttons>
-            <Button text="선택한 사진 1장 인쇄하기" onClick={handleForcePrint} />
+            <Button
+              disabled={!selectedImages.length || !printerConnected.data}
+              text="인쇄하기"
+              onClick={handleForcePrint}
+            />
           </Styled.Buttons>
         </Styled.Section>
       </AlphaStack>

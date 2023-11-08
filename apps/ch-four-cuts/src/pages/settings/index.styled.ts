@@ -31,6 +31,7 @@ export const Buttons = styled(AlphaStack).attrs({ direction: 'horizontal', spaci
 
 export const DropdownInterpolation = css`
   padding: 4px;
+  width: 100%;
   max-height: 300px;
   overflow-y: auto;
 `;

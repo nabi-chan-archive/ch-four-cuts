@@ -1,4 +1,5 @@
 import SonyCamera from '@ch-four-cuts/sony-camera';
+import { TRPCError } from '@trpc/server';
 import { observable } from '@trpc/server/observable';
 import EventEmitter from 'events';
 import { z } from 'zod';
@@ -10,80 +11,81 @@ const camera = new SonyCamera({ debug: true });
 
 export const cameraRouter = router({
   connected: publicProcedure.query(() => camera.connected),
-  connect: publicProcedure.mutation(() => {
-    if (camera.connected) {
-      throw new Error('Already connected');
-    }
-    if (camera.connecting) {
-      throw new Error('Already connecting');
-    }
-    return new Promise<string>((resolve, reject) => {
-      event.emit('connected');
-      camera.connect((error) => {
-        if (error) {
-          reject(error);
-        }
+  connect: publicProcedure.mutation(async () => {
+    try {
+      if (camera.connected) {
+        throw new Error('이미 연결되었습니다.');
+      }
+      if (camera.connecting) {
+        throw new Error('연결중입니다.');
+      }
+      return await new Promise<{ success: true }>((resolve, reject) => {
+        event.emit('connected');
+        camera.connect((error) => {
+          if (error) {
+            reject(error);
+          }
 
-        resolve('success');
+          resolve({ success: true });
+        });
       });
-    });
-  }),
-  disconnect: publicProcedure.mutation(() => {
-    if (!camera.connected) {
-      throw new Error('Already disconnected');
-    }
-    return new Promise<string>((resolve, reject) => {
-      event.emit('disconnected');
-      camera.disconnect((error) => {
-        if (error) {
-          reject(error);
-        }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: error.message,
+        });
+      }
 
-        resolve('success');
+      console.error(error);
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: '카메라 연결에 실패했습니다',
       });
-    });
+    }
   }),
-  params: publicProcedure.query(() => ({
-    connected: camera.connected,
-    status: camera.status,
-    photosRemaining: camera.photosRemaining,
-    params: camera.params,
-  })),
-  info: publicProcedure.subscription(() => {
-    return observable<{ connected: boolean } | unknown[]>((emit) => {
-      const handleParams = (...args: unknown[]) => {
-        emit.next(args);
-      };
-      const handleConnected = () => {
-        emit.next({ connected: true });
-      };
-      const handleDisconnected = () => {
-        emit.next({ connected: false });
-      };
+  disconnect: publicProcedure.mutation(async () => {
+    try {
+      if (!camera.connected) {
+        throw new Error('이미 연결 해제되었습니다.');
+      }
+      return await new Promise<{ success: true }>((resolve, reject) => {
+        event.emit('disconnected');
+        camera.disconnect((error) => {
+          if (error) {
+            reject(error);
+          }
 
-      event.on('connected', handleConnected);
-      event.on('disconnected', handleDisconnected);
-      camera.on('params', handleParams);
+          resolve({ success: true });
+        });
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: error.message,
+        });
+      }
 
-      return () => {
-        camera.off('params', handleParams);
-        event.off('connected', handleConnected);
-        event.off('disconnected', handleDisconnected);
-      };
-    });
+      console.error(error);
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: '카메라 연결 해제에 실패했습니다',
+      });
+    }
   }),
   enablePreview: publicProcedure.mutation(() => {
     camera.startViewfinder();
-    return 'success';
+    return { success: true };
   }),
   disablePreview: publicProcedure.mutation(() => {
     camera.stopViewfinder();
-    return 'success';
+    return { success: true };
   }),
   preview: publicProcedure.subscription(() => {
     return observable<string>((emit) => {
       const handlePreview = (preview: Buffer) => {
-        emit.next(preview.toString('base64'));
+        emit.next('data:image/png;base64,' + preview.toString('base64'));
       };
 
       camera.on('liveviewJpeg', handlePreview);
@@ -119,7 +121,7 @@ export const cameraRouter = router({
 
           done({
             bufferString: buffer.toString('base64'),
-            filePath: `${savePath.split('.JPG')[0]}.png`,
+            filePath: `${savePath.split('.JPG')[0]}.png`.replace('public/', ''),
           });
         });
       });

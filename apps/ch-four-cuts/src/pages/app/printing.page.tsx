@@ -19,15 +19,26 @@ function Page() {
     retry: false,
   });
 
-  useEffect(() => {
-    if (printedCount >= printCount) {
-      return;
-    }
-    print({
-      sessionId,
-      selectedImages,
-    });
-  }, [print, printCount, printedCount, selectedImages, sessionId]);
+  useEffect(
+    function printSelectedImages() {
+      if (printedCount >= printCount) {
+        return;
+      }
+      print({
+        sessionId,
+        selectedImages,
+      });
+    },
+    [print, printCount, printedCount, selectedImages, sessionId],
+  );
+
+  useEffect(function gotoMainAfter15Seconds() {
+    const timeout = setTimeout(() => {
+      navigate('/');
+    }, 15 * 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <Styled.Container>
