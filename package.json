@@ -9,6 +9,7 @@
     "fix": "pnpm run '/^fix:.+$/'",
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",
+    "preinstall": "turbo preinstall",
     "postinstall": "husky install",
     "lint": "pnpm run '/^lint:.+$/'",
     "lint:eslint": "eslint --max-warnings 0 .",

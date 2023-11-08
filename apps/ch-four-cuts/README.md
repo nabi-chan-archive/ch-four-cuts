@@ -6,5 +6,3 @@
 
 - Up to Node.js 18.x | 20.x
 - Up to Python 2.x
-
-## Pre Install
