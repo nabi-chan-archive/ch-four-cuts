@@ -46,9 +46,6 @@ importers:
       '@prisma/client':
         specifier: 5.5.2
         version: 5.5.2(prisma@5.5.2)
-      '@react-thermal-printer/image':
-        specifier: ^0.11.1
-        version: 0.11.1
       '@resvg/resvg-js':
         specifier: ^2.6.0
         version: 2.6.0
@@ -97,18 +94,12 @@ importers:
       qrcode:
         specifier: ^1.5.3
         version: 1.5.3
-      qrcode.react:
-        specifier: ^3.1.0
-        version: 3.1.0(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-thermal-printer:
-        specifier: ^0.16.0
-        version: 0.16.0(react-dom@18.2.0)(react@18.2.0)
       satori:
         specifier: ^0.10.9
         version: 0.10.9
@@ -152,12 +143,6 @@ importers:
       '@types/ws':
         specifier: ^8.5.8
         version: 8.5.8
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^6.3.0
-        version: 6.9.0(@typescript-eslint/parser@6.5.0)(eslint@8.48.0)(typescript@5.2.2)
-      '@typescript-eslint/parser':
-        specifier: ^6.3.0
-        version: 6.5.0(eslint@8.48.0)(typescript@5.2.2)
       '@vitejs/plugin-basic-ssl':
         specifier: ^1.0.1
         version: 1.0.1(vite@4.5.0)
@@ -2970,21 +2955,6 @@ packages:
       '@babel/runtime': 7.23.2
     dev: false
 
-  /@react-thermal-printer/image@0.11.1:
-    resolution:
-      { integrity: sha512-ocGGjZdb2n4CWfrbGPlhus45bwh2Tu8Oc1Juiyq775kZ+ux1QRzvADEX4/aMUMYOXmZs2MK0ckWOa8LqcxmtCQ== }
-    dependencies:
-      floyd-steinberg: 1.0.6
-    dev: false
-
-  /@react-thermal-printer/printer@0.13.0:
-    resolution:
-      { integrity: sha512-AKrCPHrP/jrl1vyhw+ew3i6C/wSIu0rdia+aO92J1gTdH/hxNKTB8Cngt/d+tAAdMuVgLHaflExJxkJorYUdcA== }
-    dependencies:
-      '@react-thermal-printer/image': 0.11.1
-      iconv-lite: 0.6.3
-    dev: false
-
   /@resvg/resvg-js-android-arm-eabi@2.6.0:
     resolution:
       { integrity: sha512-lJnZ/2P5aMocrFMW7HWhVne5gH82I8xH6zsfH75MYr4+/JOaVcGCTEQ06XFohGMdYRP3v05SSPLPvTM/RHjxfA== }
@@ -3413,6 +3383,7 @@ packages:
   /@types/json-schema@7.0.12:
     resolution:
       { integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA== }
+    dev: false
 
   /@types/json5@0.0.29:
     resolution:
@@ -3575,6 +3546,7 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@typescript-eslint/parser@6.5.0(eslint@8.48.0)(typescript@5.2.2):
     resolution:
@@ -3596,6 +3568,7 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@typescript-eslint/scope-manager@6.5.0:
     resolution:
@@ -3604,6 +3577,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.5.0
       '@typescript-eslint/visitor-keys': 6.5.0
+    dev: false
 
   /@typescript-eslint/scope-manager@6.9.0:
     resolution:
@@ -3612,6 +3586,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.9.0
       '@typescript-eslint/visitor-keys': 6.9.0
+    dev: false
 
   /@typescript-eslint/type-utils@6.9.0(eslint@8.48.0)(typescript@5.2.2):
     resolution:
@@ -3632,16 +3607,19 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@typescript-eslint/types@6.5.0:
     resolution:
       { integrity: sha512-eqLLOEF5/lU8jW3Bw+8auf4lZSbbljHR2saKnYqON12G/WsJrGeeDHWuQePoEf9ro22+JkbPfWQwKEC5WwLQ3w== }
     engines: { node: ^16.0.0 || >=18.0.0 }
+    dev: false
 
   /@typescript-eslint/types@6.9.0:
     resolution:
       { integrity: sha512-+KB0lbkpxBkBSiVCuQvduqMJy+I1FyDbdwSpM3IoBS7APl4Bu15lStPjgBIdykdRqQNYqYNMa8Kuidax6phaEw== }
     engines: { node: ^16.0.0 || >=18.0.0 }
+    dev: false
 
   /@typescript-eslint/typescript-estree@6.5.0(typescript@5.2.2):
     resolution:
@@ -3663,6 +3641,7 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@typescript-eslint/typescript-estree@6.9.0(typescript@5.2.2):
     resolution:
@@ -3684,6 +3663,7 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@typescript-eslint/utils@6.9.0(eslint@8.48.0)(typescript@5.2.2):
     resolution:
@@ -3703,6 +3683,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - typescript
+    dev: false
 
   /@typescript-eslint/visitor-keys@6.5.0:
     resolution:
@@ -3711,6 +3692,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.5.0
       eslint-visitor-keys: 3.4.3
+    dev: false
 
   /@typescript-eslint/visitor-keys@6.9.0:
     resolution:
@@ -3719,6 +3701,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.9.0
       eslint-visitor-keys: 3.4.3
+    dev: false
 
   /@vitejs/plugin-basic-ssl@1.0.1(vite@4.5.0):
     resolution:
@@ -3948,6 +3931,7 @@ packages:
     resolution:
       { integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw== }
     engines: { node: '>=8' }
+    dev: false
 
   /array.prototype.findlastindex@1.2.3:
     resolution:
@@ -4955,6 +4939,7 @@ packages:
     engines: { node: '>=8' }
     dependencies:
       path-type: 4.0.0
+    dev: false
 
   /doctrine@2.1.0:
     resolution:
@@ -5981,6 +5966,7 @@ packages:
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
+    dev: false
 
   /globby@13.2.2:
     resolution:
@@ -6185,14 +6171,6 @@ packages:
   /iconv-lite@0.5.0:
     resolution:
       { integrity: sha512-NnEhI9hIEKHOzJ4f697DMz9IQEXr/MMJ5w64vN2/4Ai+wRnvV7SBrL0KLoRlwaKVghOc7LQ5YkPLuX146b6Ydw== }
-    engines: { node: '>=0.10.0' }
-    dependencies:
-      safer-buffer: 2.1.2
-    dev: false
-
-  /iconv-lite@0.6.3:
-    resolution:
-      { integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw== }
     engines: { node: '>=0.10.0' }
     dependencies:
       safer-buffer: 2.1.2
@@ -7798,15 +7776,6 @@ packages:
       { integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA== }
     engines: { node: '>=6' }
 
-  /qrcode.react@3.1.0(react@18.2.0):
-    resolution:
-      { integrity: sha512-oyF+Urr3oAMUG/OiOuONL3HXM+53wvuH3mtIWQrYmsXoAq0DkvZp2RYUWFSMFtbdOpuS++9v+WAkzNVkMlNW6Q== }
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /qrcode@1.5.3:
     resolution:
       { integrity: sha512-puyri6ApkEHYiVl4CFzo1tDkAZ+ATcnbJrJ6RiBM1Fhctdn/ix9MTE3hRph33omisEbC/2fcfemsseiKgBPKZg== }
@@ -7972,20 +7941,6 @@ packages:
       use-latest: 1.2.1(@types/react@18.2.31)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
-    dev: false
-
-  /react-thermal-printer@0.16.0(react-dom@18.2.0)(react@18.2.0):
-    resolution:
-      { integrity: sha512-zpffGzSUaj8/et9NuDNwHZ1yO7QWRty/AeyC7UdGcXPkgG8IyBb0xvX6oVkJYuNkFy9Q5oQdcZtKCLmGjD3Pbw== }
-    peerDependencies:
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      '@react-thermal-printer/image': 0.11.1
-      '@react-thermal-printer/printer': 0.13.0
-      classnames: 2.3.2
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:
@@ -8425,6 +8380,7 @@ packages:
     resolution:
       { integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q== }
     engines: { node: '>=8' }
+    dev: false
 
   /slash@4.0.0:
     resolution:
@@ -8887,6 +8843,7 @@ packages:
       typescript: '>=4.2.0'
     dependencies:
       typescript: 5.2.2
+    dev: false
 
   /ts-node@10.9.1(@types/node@20.8.10)(typescript@5.2.2):
     resolution:
