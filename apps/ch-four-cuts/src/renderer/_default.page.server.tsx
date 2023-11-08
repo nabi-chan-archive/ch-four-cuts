@@ -1,5 +1,5 @@
 export { render };
-export const passToClient = ['pageProps', 'dehydratedState'];
+export const passToClient = ['pageProps', 'trpcState'];
 
 import { ServerStyleSheet } from '@ch-four-cuts/bezier-design-system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -9,6 +9,7 @@ import { dangerouslySkipEscape, escapeInject } from 'vike/server';
 import ws from 'ws';
 import favicon from '#/assets/favicon.ico';
 import { trpc } from '#/utils/trpc';
+import { helpers } from '#/utils/trpc.server';
 import { PageShell } from '../features/PageShell';
 import type { PageContextServer } from '../types/vike';
 
@@ -70,6 +71,8 @@ async function render(pageContext: PageContextServer) {
 
   return {
     documentHtml,
-    pageContext: {},
+    pageContext: {
+      trpcState: helpers.dehydrate(),
+    },
   };
 }

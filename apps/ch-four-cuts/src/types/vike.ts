@@ -1,3 +1,5 @@
+import type { DehydratedState } from '@tanstack/react-query';
+
 export type {
   PageContextServer,
   PageContextClientWithServerRouting as PageContextClient,
@@ -12,6 +14,7 @@ declare global {
       Page: Page;
       pageProps?: PageProps;
       urlPathname: string;
+      trpcState: DehydratedState;
       exports: {
         documentProps?: {
           title?: string;
