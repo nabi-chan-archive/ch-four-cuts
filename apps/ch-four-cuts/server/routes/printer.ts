@@ -7,7 +7,7 @@ import { resolve } from 'path';
 import { z } from 'zod';
 import { generateFooter } from '#/features/Frame/server/generateFooter';
 import { transformImage } from '#/features/Images/utils/transformImage';
-import { publicProcedure, router } from '../trpc.js';
+import { publicProcedure, router } from '#/server/trpc';
 
 const tp = new ThermalPrinter({
   type: PrinterTypes.EPSON,

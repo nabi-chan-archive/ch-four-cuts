@@ -40,6 +40,7 @@ async function startServer() {
         },
         resolve: {
           alias: {
+            '#/server': join(root, 'server'),
             '#': join(root, 'src'),
           },
         },

@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { readdir } from 'fs/promises';
 import { resolve } from 'path';
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
+import { publicProcedure, router } from '#/server/trpc';
 
 export const sessionRouter = router({
   images: publicProcedure

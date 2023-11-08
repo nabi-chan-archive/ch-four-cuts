@@ -3,7 +3,7 @@ import { observable } from '@trpc/server/observable';
 import EventEmitter from 'events';
 import { z } from 'zod';
 import { convertJpgToPng } from '#/features/Images/utils/convertJpgToPng';
-import { publicProcedure, router } from '../trpc';
+import { publicProcedure, router } from '#/server/trpc';
 
 const event = new EventEmitter();
 const camera = new SonyCamera({ debug: true });

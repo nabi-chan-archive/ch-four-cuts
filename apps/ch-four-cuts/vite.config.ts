@@ -7,6 +7,7 @@ const config: UserConfig = {
   plugins: [react(), vike()],
   resolve: {
     alias: {
+      '#/server': resolve('./server'),
       '#': resolve('./src'),
     },
   },

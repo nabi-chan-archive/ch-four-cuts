@@ -1,8 +1,8 @@
-import { publicProcedure, router } from '../trpc.js';
-import { cameraRouter } from './camera.js';
-import { printerRouter } from './printer.js';
-import { sessionRouter } from './session.js';
-import { settingsRouter } from './settings.js';
+import { publicProcedure, router } from '#/server/trpc';
+import { cameraRouter } from './camera';
+import { printerRouter } from './printer';
+import { sessionRouter } from './session';
+import { settingsRouter } from './settings';
 
 export const appRouter = router({
   printer: printerRouter,
