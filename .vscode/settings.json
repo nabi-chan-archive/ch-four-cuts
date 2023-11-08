@@ -4,7 +4,7 @@
     "source.formatDocument": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "eslint.enable": true,
   "eslint.format.enable": true,
   "eslint.experimental.useFlatConfig": true,
