@@ -11,9 +11,9 @@ import { publicProcedure, router } from '#/server/trpc';
 import prisma from '#/utils/prisma.server';
 import type { FrameId } from '#/features/Frame';
 
-const BUCKET_URL = import.meta.env.VITE_AWS_BUCKET;
+const BUCKET_URL = import.meta.env?.VITE_AWS_BUCKET;
 const client = new S3Client({
-  credentials: fromIni({ profile: import.meta.env.VITE_AWS_PROFILE }),
+  credentials: fromIni({ profile: import.meta.env?.VITE_AWS_PROFILE }),
 });
 
 export const frameRouter = router({
