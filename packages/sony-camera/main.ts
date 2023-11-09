@@ -2,7 +2,7 @@ import axios from 'axios';
 import EventEmitter from 'events';
 import { request } from 'http';
 import { lt } from 'semver';
-import { Callback, Status } from './types';
+import type { Callback, Status } from './types';
 
 const SECOND = 1000;
 const MIN_VERSION = '2.1.4';
