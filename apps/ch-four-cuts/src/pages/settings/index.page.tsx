@@ -92,19 +92,19 @@ function Page() {
               text="연결 해제"
               onClick={() => cameraDisconnect.mutate()}
               loading={cameraDisconnect.isLoading}
-              disabled={!cameraConnect.data}
+              disabled={!cameraConnected.data}
             />
             <Button
               text="미리보기 시작"
               onClick={() => cameraEnablePreview.mutate()}
               loading={cameraEnablePreview.isLoading}
-              disabled={!cameraConnect.data}
+              disabled={!cameraConnected.data}
             />
             <Button
               text="미리보기 중지"
               onClick={() => cameraDisablePreview.mutate()}
               loading={cameraDisablePreview.isLoading}
-              disabled={!cameraConnect.data}
+              disabled={!cameraConnected.data}
             />
           </Styled.Buttons>
         </Styled.Section>

@@ -61,7 +61,11 @@ export const printerRouter = router({
     .mutation(async ({ input }) => {
       try {
         const listFiles = await readdir(resolve('public/images/input/' + input.sessionId));
-        const footerSvg = await generateFooter({ qrcodeUrl: input.sessionId });
+        const footerSvg = await generateFooter({ qrcodeUrl: import.meta.env.VITE_APP_URL + input.sessionId });
+        await prisma.session.update({
+          where: { sessionId: input.sessionId },
+          data: { printedCount: { increment: 1 } },
+        });
         await readdir(resolve('public/images/output/' + input.sessionId)).catch(() => {
           mkdir(resolve('public/images/output/' + input.sessionId)).catch(_.noop);
         });
@@ -100,6 +104,8 @@ export const printerRouter = router({
           message: '프린터 인쇄에 실패했습니다.',
           cause: error,
         });
+      } finally {
+        printer.clear();
       }
     }),
 });

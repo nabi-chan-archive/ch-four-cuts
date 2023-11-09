@@ -9,19 +9,36 @@ import * as Styled from './select.styled';
 
 function Page() {
   const [printedCount, setPrintedCount] = useState(0);
+  const [queuedPrintedCount, setQueuedPrintedCount] = useState(0);
 
   const sessionId = useAtomValue(sessionAtom);
   const selectedImages = useAtomValue(selectedImageAtom);
   const printCount = useAtomValue(printerCountAtom);
 
   const { mutate: print } = trpc.printer.frame.useMutation({
+    onMutate: () => setQueuedPrintedCount((prev) => prev + 1),
     onSuccess: () => setPrintedCount((prev) => prev + 1),
     retry: false,
   });
 
+  const { mutate: createFrameImage, isSuccess } = trpc.frame.createFrameImage.useMutation();
+
+  useEffect(
+    function createFrameAtFirstTime() {
+      if (printedCount !== 1) {
+        return;
+      }
+      createFrameImage({
+        sessionId,
+        imageUrl: selectedImages,
+      });
+    },
+    [createFrameImage, printedCount, selectedImages, sessionId],
+  );
+
   useEffect(
     function printSelectedImages() {
-      if (printedCount >= printCount) {
+      if (queuedPrintedCount >= printCount) {
         return;
       }
       print({
@@ -29,13 +46,13 @@ function Page() {
         selectedImages,
       });
     },
-    [print, printCount, printedCount, selectedImages, sessionId],
+    [print, printCount, queuedPrintedCount, selectedImages, sessionId],
   );
 
-  useEffect(function gotoMainAfter15Seconds() {
+  useEffect(function gotoMainAfter1Minutes() {
     const timeout = setTimeout(() => {
       navigate('/');
-    }, 15 * 1000);
+    }, 60 * 1000);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -52,7 +69,7 @@ function Page() {
         </Text>
 
         <Button
-          disabled={printedCount < printCount}
+          disabled={printedCount < printCount || !isSuccess}
           onClick={() => navigate('/app/complete')}
           text="인쇄 완료!"
           size={ButtonSize.XL}

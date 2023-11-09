@@ -9,17 +9,11 @@ import {
 } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon, MinusIcon, PlusIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useAtom } from 'jotai';
-import _ from 'lodash';
-import { printerCountAtom, sessionAtom } from '#/features/AppState';
+import { printerCountAtom } from '#/features/AppState';
 import * as Styled from './intro.styled';
 
 function Page() {
   const [count, setCount] = useAtom(printerCountAtom);
-  const [sessionId, setSessionId] = useAtom(sessionAtom);
-
-  if (!sessionId) {
-    setSessionId('session' + _.toString(+new Date()));
-  }
 
   return (
     <Styled.Container>

@@ -1,6 +1,6 @@
 import { ToastPreset, useToast } from '@ch-four-cuts/bezier-design-system';
 import _ from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { trpc } from '#/utils/trpc';
 
 export function useSettingsQuery() {
@@ -109,17 +109,6 @@ export function useSettingsQuery() {
     setSessionId(sessionId);
     setSelectedImages([]);
   }, []);
-
-  // 통계
-
-  useEffect(() => {
-    return () => {
-      if (!cameraConnected.data) {
-        return;
-      }
-      cameraDisablePreview.mutate();
-    };
-  }, [cameraConnected.data, cameraDisablePreview]);
 
   return useMemo(
     () => ({

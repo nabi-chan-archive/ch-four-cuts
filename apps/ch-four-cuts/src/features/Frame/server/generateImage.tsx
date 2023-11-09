@@ -6,7 +6,7 @@ import { Frame1, Frame4, type FrameId } from '#/features/Frame';
 
 interface GenerateImageArgs {
   frameId: FrameId;
-  imageUrl: string | [string, string, string, string];
+  imageUrl: string | string[];
   qrcodeUrl: string;
   hasPadding: boolean;
 }
@@ -17,7 +17,7 @@ export async function generateImage({ frameId, imageUrl, qrcodeUrl, hasPadding }
   if (frameId === 1) {
     return await satori(<Frame1 imageSrc={imageUrl as string} qrCodeLink={qrCodeLink} hasPadding={hasPadding} />, {
       width: 599,
-      height: 526,
+      height: 542,
       fonts: [
         {
           name: 'Pretendard',

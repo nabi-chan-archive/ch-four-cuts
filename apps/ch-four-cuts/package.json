@@ -12,6 +12,8 @@
     "start": "pnpm run server:prod"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.445.0",
+    "@aws-sdk/credential-providers": "^3.445.0",
     "@ch-four-cuts/bezier-design-system": "workspace:^",
     "@ch-four-cuts/sony-camera": "workspace:^",
     "@prisma/client": "5.5.2",

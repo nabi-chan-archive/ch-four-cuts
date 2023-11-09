@@ -29,7 +29,7 @@ interface ImageProps {
 }
 
 export function Image({ src }: ImageProps) {
-  return <img style={{ width: '100%' }} src={src} alt="" />;
+  return <img style={{ width: '100%' }} src={src} alt="" width={600} height={400} />;
 }
 
 interface FooterProps {

@@ -10,7 +10,7 @@ function Page() {
   const sessionId = useAtomValue(sessionAtom);
   const frameId = useAtomValue(printerFrameAtom);
   const [selectedImage, setSelectedImage] = useAtom(selectedImageAtom);
-  const { data: imageList } = trpc.session.images.useQuery({ sessionId });
+  const { data } = trpc.session.sessionDetail.useQuery({ sessionId });
 
   return (
     <Styled.Container>
@@ -21,7 +21,7 @@ function Page() {
         </Text>
 
         <Styled.PhotoGrid>
-          {imageList
+          {data?.filenames
             ?.slice(0, 6)
             .map((image) => (
               <Styled.Photo
