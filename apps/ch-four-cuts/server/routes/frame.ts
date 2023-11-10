@@ -92,12 +92,12 @@ export const frameRouter = router({
 
         const putOriginalObjectCommand = new PutObjectCommand({
           Bucket: BUCKET_URL,
-          Key: `/frame/${session.sessionId}/original.png`,
+          Key: `frame/${session.sessionId}/original.png`,
           Body: originalFrameBuffer,
         });
         const putTransformedObjectCommand = new PutObjectCommand({
           Bucket: BUCKET_URL,
-          Key: `/frame/${session.sessionId}/transformed.png`,
+          Key: `frame/${session.sessionId}/transformed.png`,
           Body: transformedFrameBuffer,
         });
 
