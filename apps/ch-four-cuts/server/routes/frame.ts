@@ -58,52 +58,26 @@ export const frameRouter = router({
                   ),
                 )
               ).map((buffer) => 'data:image/png;base64,' + buffer.toString('base64'));
-        const outputImageBuffer =
-          frameId === 1
-            ? 'data:image/png;base64,' +
-              (await readFile(resolve('public/images/output/' + session.sessionId + '/' + input.imageUrl[0]))).toString(
-                'base64',
-              )
-            : (
-                await Promise.all(
-                  input.imageUrl.map((imageUrl) =>
-                    readFile(resolve('public/images/output/' + session.sessionId + '/' + imageUrl)),
-                  ),
-                )
-              ).map((buffer) => 'data:image/png;base64,' + buffer.toString('base64'));
+
         const originalFrame = await generateImage({
           frameId,
           imageUrl: inputImageBuffer,
           qrcodeUrl: process.env.APP_URL + session.sessionId,
           hasPadding: true,
         });
-        const transformedFrame = await generateImage({
-          frameId,
-          imageUrl: outputImageBuffer,
-          qrcodeUrl: process.env.APP_URL + session.sessionId,
-          hasPadding: true,
-        });
 
         const originalFrameBuffer = new Resvg(originalFrame).render().asPng();
-        const transformedFrameBuffer = new Resvg(transformedFrame).render().asPng();
 
         await mkdir(resolve(`public/images/frame/${session.sessionId}/`)).catch(_.noop);
         await writeFile(resolve(`public/images/frame/${session.sessionId}/original.png`), originalFrameBuffer);
-        await writeFile(resolve(`public/images/frame/${session.sessionId}/transformed.png`), transformedFrameBuffer);
 
         const putOriginalObjectCommand = new PutObjectCommand({
           Bucket: BUCKET_URL,
           Key: `frame/${session.sessionId}/original.png`,
           Body: originalFrameBuffer,
         });
-        const putTransformedObjectCommand = new PutObjectCommand({
-          Bucket: BUCKET_URL,
-          Key: `frame/${session.sessionId}/transformed.png`,
-          Body: transformedFrameBuffer,
-        });
 
         await client.send(putOriginalObjectCommand);
-        await client.send(putTransformedObjectCommand);
 
         return { success: true };
       } catch (error) {
