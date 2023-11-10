@@ -61,7 +61,7 @@ export const printerRouter = router({
     .mutation(async ({ input }) => {
       try {
         const listFiles = await readdir(resolve('public/images/input/' + input.sessionId));
-        const footerSvg = await generateFooter({ qrcodeUrl: import.meta.env.VITE_APP_URL + input.sessionId });
+        const footerSvg = await generateFooter({ qrcodeUrl: import.meta.env.APP_URL + input.sessionId });
         await prisma.session.update({
           where: { sessionId: input.sessionId },
           data: { printedCount: { increment: 1 } },
