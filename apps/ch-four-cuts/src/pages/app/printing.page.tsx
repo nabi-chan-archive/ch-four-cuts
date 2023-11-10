@@ -16,26 +16,20 @@ function Page() {
   const printCount = useAtomValue(printerCountAtom);
   const resetSelectedImage = useSetAtom(selectedImageAtom);
 
+  const { mutate: createFrameImage } = trpc.frame.createFrameImage.useMutation();
   const { mutate: print } = trpc.printer.frame.useMutation({
     onMutate: () => setQueuedPrintedCount((prev) => prev + 1),
-    onSuccess: () => setPrintedCount((prev) => prev + 1),
+    onSuccess: () => {
+      if (printCount === 0) {
+        createFrameImage({
+          sessionId,
+          imageUrl: selectedImages,
+        });
+      }
+      setPrintedCount((prev) => prev + 1);
+    },
     retry: false,
   });
-
-  const { mutate: createFrameImage, isSuccess } = trpc.frame.createFrameImage.useMutation();
-
-  useEffect(
-    function createFrameAtFirstTime() {
-      if (printedCount !== 1) {
-        return;
-      }
-      createFrameImage({
-        sessionId,
-        imageUrl: selectedImages,
-      });
-    },
-    [createFrameImage, printedCount, selectedImages, sessionId],
-  );
 
   useEffect(
     function printSelectedImages() {
@@ -50,14 +44,17 @@ function Page() {
     [print, printCount, queuedPrintedCount, selectedImages, sessionId],
   );
 
-  useEffect(function gotoMainAfter1Minutes() {
-    const timeout = setTimeout(() => {
-      resetSelectedImage([]);
-      navigate('/');
-    }, 60 * 1000);
+  useEffect(
+    function gotoMainAfter1Minutes() {
+      const timeout = setTimeout(() => {
+        resetSelectedImage([]);
+        navigate('/');
+      }, 60 * 1000);
 
-    return () => clearTimeout(timeout);
-  }, []);
+      return () => clearTimeout(timeout);
+    },
+    [resetSelectedImage],
+  );
 
   return (
     <Styled.Container>
@@ -71,7 +68,7 @@ function Page() {
         </Text>
 
         <Button
-          disabled={printedCount < printCount || !isSuccess}
+          disabled={printedCount < printCount}
           onClick={() => navigate('/app/complete')}
           text="인쇄 완료!"
           size={ButtonSize.XL}
