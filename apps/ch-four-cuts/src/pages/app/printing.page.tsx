@@ -21,19 +21,14 @@ function Page() {
     onMutate: () => setQueuedPrintedCount((prev) => prev + 1),
     onSuccess: () => {
       setPrintedCount((prev) => prev + 1);
-    },
-    retry: 5,
-    retryDelay: 1000,
-  });
-
-  useEffect(() => {
-    if (printCount === 1) {
       createFrameImage({
         sessionId,
         imageUrl: selectedImages,
       });
-    }
-  }, [createFrameImage, printCount, selectedImages, sessionId]);
+    },
+    retry: 5,
+    retryDelay: 1000,
+  });
 
   useEffect(
     function printSelectedImages() {
