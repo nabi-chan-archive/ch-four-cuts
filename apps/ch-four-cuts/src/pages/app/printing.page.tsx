@@ -20,16 +20,19 @@ function Page() {
   const { mutate: print } = trpc.printer.frame.useMutation({
     onMutate: () => setQueuedPrintedCount((prev) => prev + 1),
     onSuccess: () => {
-      if (printCount === 0) {
-        createFrameImage({
-          sessionId,
-          imageUrl: selectedImages,
-        });
-      }
       setPrintedCount((prev) => prev + 1);
     },
     retry: false,
   });
+
+  useEffect(() => {
+    if (printCount === 1) {
+      createFrameImage({
+        sessionId,
+        imageUrl: selectedImages,
+      });
+    }
+  }, [createFrameImage, printCount, selectedImages, sessionId]);
 
   useEffect(
     function printSelectedImages() {
