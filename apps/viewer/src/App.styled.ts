@@ -1,0 +1,40 @@
+import { styled } from '@ch-four-cuts/bezier-design-system';
+
+export const Container = styled.div`
+  height: 100vh;
+`;
+
+export const Header = styled.header`
+  padding: 16px;
+  height: 75px;
+
+  img {
+    height: 100%;
+  }
+`;
+
+export const Content = styled.main`
+  height: calc(100vh - 75px - 82px);
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+`;
+
+export const Image = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+export const Footer = styled.footer`
+  height: 82px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+
+  button {
+    flex: 1;
+    white-space: pre-line;
+  }
+`;
