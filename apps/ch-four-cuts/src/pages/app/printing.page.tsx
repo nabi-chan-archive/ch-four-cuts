@@ -22,7 +22,8 @@ function Page() {
     onSuccess: () => {
       setPrintedCount((prev) => prev + 1);
     },
-    retry: false,
+    retry: 5,
+    retryDelay: 1000,
   });
 
   useEffect(() => {
