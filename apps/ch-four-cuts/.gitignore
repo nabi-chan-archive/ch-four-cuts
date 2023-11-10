@@ -2,3 +2,5 @@ public/images/**/*.png
 public/images/**/*.jpg
 
 prisma/ch-four-cuts.db
+
+.env
