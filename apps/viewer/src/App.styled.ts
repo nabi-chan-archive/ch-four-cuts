@@ -17,6 +17,8 @@ export const Content = styled.main`
   height: calc(100dvh - 75px - 82px);
   padding: 16px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 16px;
 `;
