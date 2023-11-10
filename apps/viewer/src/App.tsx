@@ -14,8 +14,12 @@ function App() {
         <Styled.Image src={`/frame/${sessionId}/original.png`} alt="" />
       </Styled.Content>
       <Styled.Footer>
-        <Button size={ButtonSize.XL} text="다운로드" />
-        <Button size={ButtonSize.XL} text={`채널톡이\n 궁금하다면?`} />
+        <a href={`/frame/${sessionId}/original.png`} download>
+          <Button size={ButtonSize.XL} text="다운로드" />
+        </a>
+        <a href="https://channel.io/ko/team">
+          <Button size={ButtonSize.XL} text={`채널톡이\n 궁금하다면?`} />
+        </a>
       </Styled.Footer>
     </Styled.Container>
   );
