@@ -23,7 +23,7 @@ export const frameRouter = router({
   createFrameImage: publicProcedure
     .input(
       z.object({
-        sessionId: z.string().uuid(),
+        sessionId: z.string(),
         imageUrl: z.array(z.string()),
       }),
     )
