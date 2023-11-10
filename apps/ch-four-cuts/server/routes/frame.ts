@@ -15,6 +15,7 @@ import type { FrameId } from '#/features/Frame';
 
 const BUCKET_URL = process.env.AWS_BUCKET;
 const client = new S3Client({
+  region: 'ap-northeast-2',
   credentials: fromIni({ profile: process.env.AWS_PROFILE }),
 });
 
