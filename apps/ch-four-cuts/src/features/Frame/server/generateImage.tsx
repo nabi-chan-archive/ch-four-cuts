@@ -36,7 +36,7 @@ export async function generateImage({ frameId, imageUrl, qrcodeUrl, hasPadding }
       />,
       {
         width: 599,
-        height: 1708,
+        height: 1800,
         fonts: [
           {
             name: 'Pretendard',
