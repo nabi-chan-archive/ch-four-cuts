@@ -11,9 +11,9 @@ export function Frame4({ imageSrc, qrCodeLink, hasPadding = true }: Frame4Props)
     <Frame.Cover hasPadding={hasPadding}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Frame.Image src={imageSrc[0]} />
-        <Frame.Image src={imageSrc[0]} />
-        <Frame.Image src={imageSrc[0]} />
-        <Frame.Image src={imageSrc[0]} />
+        <Frame.Image src={imageSrc[1]} />
+        <Frame.Image src={imageSrc[2]} />
+        <Frame.Image src={imageSrc[3]} />
         <Frame.Footer qrCodeLink={qrCodeLink} />
       </div>
     </Frame.Cover>
