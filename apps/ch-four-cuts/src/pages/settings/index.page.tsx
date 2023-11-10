@@ -14,6 +14,7 @@ import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/ic
 import { format } from 'date-fns';
 import _ from 'lodash';
 import { useSettingsQuery } from '#/features/Settings/queries/useSettingsQuery';
+import { trpc } from '#/utils/trpc';
 import * as Styled from './index.styled';
 
 function Page() {
@@ -40,6 +41,8 @@ function Page() {
     handleClickThumbnail,
     handleForcePrint,
   } = useSettingsQuery();
+
+  const { mutate: createFrameImage } = trpc.frame.createFrameImage.useMutation();
 
   return (
     <Styled.Container>
@@ -200,6 +203,68 @@ function Page() {
               disabled={!selectedImages.length || !printerConnected.data}
               text="인쇄하기"
               onClick={handleForcePrint}
+            />
+          </Styled.Buttons>
+        </Styled.Section>
+
+        <Styled.Section>
+          <Text typo={Typography.Size24} bold>
+            프레임
+          </Text>
+          <FormControl labelPosition="left">
+            <FormLabel>
+              <Text typo={Typography.Size14} bold>
+                인쇄할 세션 ID
+              </Text>
+            </FormLabel>
+            <AlphaStack direction="vertical" spacing={8}>
+              <Select
+                dropdownInterpolation={Styled.DropdownInterpolation}
+                text={sessionId}
+                placeholder="인쇄할 세션을 선택해주세요"
+              >
+                {!sessionList.data?.length && <ListItem content="세션이 없습니다." disabled />}
+                {sessionList.data?.map((session) => (
+                  <ListItem
+                    leftIcon={ChannelBtnSmileFilledIcon}
+                    content={session.sessionId}
+                    rightContent={
+                      format(new Date(session.createdAt), 'yyyy-MM-dd HH:mm:ss') + `, ${session.frameType}컷`
+                    }
+                    key={session.sessionId}
+                    onClick={() => handleSetSessionId(session.sessionId)}
+                  />
+                ))}
+              </Select>
+              <AlphaStack direction="horizontal" spacing={8} style={{ flexWrap: 'wrap' }}>
+                {sessionDetail.data?.filenames.map((filename) => (
+                  <img
+                    style={{
+                      width: 200,
+                      borderRadius: 16,
+                      border: selectedImages.includes(filename)
+                        ? '4px solid var(--bgtxt-purple-normal)'
+                        : '4px solid transparent',
+                    }}
+                    src={`images/output/${sessionId}/${filename}`}
+                    key={filename}
+                    onClick={() => handleClickThumbnail(filename)}
+                  />
+                ))}
+              </AlphaStack>
+            </AlphaStack>
+          </FormControl>
+
+          <Styled.Buttons>
+            <Button
+              disabled={!selectedImages.length}
+              text="뽑기"
+              onClick={() => {
+                createFrameImage({
+                  sessionId,
+                  imageUrl: selectedImages,
+                });
+              }}
             />
           </Styled.Buttons>
         </Styled.Section>
