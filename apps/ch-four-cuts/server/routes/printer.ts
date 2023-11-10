@@ -13,6 +13,7 @@ import { publicProcedure, router } from '#/server/trpc';
 import prisma from '#/utils/prisma.server';
 
 let printer: ThermalPrinter;
+let busy = false;
 
 export const printerRouter = router({
   connected: publicProcedure.query(() => {
@@ -62,6 +63,12 @@ export const printerRouter = router({
     .input(z.object({ sessionId: z.string(), selectedImages: z.array(z.string()) }))
     .mutation(async ({ input }) => {
       try {
+        if (busy === true) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+          });
+        }
+        busy = true;
         const listFiles = await readdir(resolve('public/images/input/' + input.sessionId));
         const footerSvg = await generateFooter({ qrcodeUrl: process.env.APP_URL + input.sessionId });
         try {
@@ -99,6 +106,7 @@ export const printerRouter = router({
 
         printer.cut();
         await printer.execute();
+        busy = false;
         return { success: true };
       } catch (error) {
         if (error instanceof TRPCError) {
