@@ -24,6 +24,7 @@ export const Content = styled.main`
 export const Image = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: contain;
 `;
 
 export const Footer = styled.footer`
@@ -33,8 +34,12 @@ export const Footer = styled.footer`
   gap: 16px;
   padding: 16px;
 
-  button {
+  a {
     flex: 1;
+  }
+
+  button {
     white-space: pre-line;
+    width: 100%;
   }
 `;

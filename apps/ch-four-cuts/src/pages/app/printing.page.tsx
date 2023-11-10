@@ -1,6 +1,6 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { navigate } from 'vike/client/router';
 import { printerCountAtom, selectedImageAtom, sessionAtom } from '#/features/AppState';
@@ -14,6 +14,7 @@ function Page() {
   const sessionId = useAtomValue(sessionAtom);
   const selectedImages = useAtomValue(selectedImageAtom);
   const printCount = useAtomValue(printerCountAtom);
+  const resetSelectedImage = useSetAtom(selectedImageAtom);
 
   const { mutate: print } = trpc.printer.frame.useMutation({
     onMutate: () => setQueuedPrintedCount((prev) => prev + 1),
@@ -51,6 +52,7 @@ function Page() {
 
   useEffect(function gotoMainAfter1Minutes() {
     const timeout = setTimeout(() => {
+      resetSelectedImage([]);
       navigate('/');
     }, 60 * 1000);
 
