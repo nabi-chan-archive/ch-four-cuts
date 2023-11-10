@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { Resvg } from '@resvg/resvg-js';
 import { TRPCError } from '@trpc/server';
 import { mkdir, readdir } from 'fs/promises';

@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { fromIni } from '@aws-sdk/credential-providers';
 import { Resvg } from '@resvg/resvg-js';
