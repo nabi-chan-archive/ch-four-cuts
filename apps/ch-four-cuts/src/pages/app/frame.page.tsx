@@ -2,6 +2,8 @@ import { Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-sy
 import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useSetAtom } from 'jotai';
 import { navigate } from 'vike/client/router';
+import frame1 from '#/assets/frame/IMG_0285.png';
+import frame4 from '#/assets/frame/IMG_0286.png';
 import { printerFrameAtom, sessionAtom } from '#/features/AppState';
 import { trpc } from '#/utils/trpc';
 import * as Styled from './frame.styled';
@@ -31,7 +33,7 @@ function Page() {
         </Text>
         <Styled.FrameContainer>
           <Styled.Frame as="button" onClick={handleClickFrame(1)}>
-            <img src="https://placekitten.com/1200/900" alt="" />
+            <img src={frame1} alt="" style={{ height: 400 }} />
             <Styled.FrameContent>
               <Text typo={Typography.Size24} bold>
                 한컷 찍기 📸
@@ -39,7 +41,7 @@ function Page() {
             </Styled.FrameContent>
           </Styled.Frame>
           <Styled.Frame as="button" onClick={handleClickFrame(4)}>
-            <img src="https://placekitten.com/1200/900" alt="" />
+            <img src={frame4} alt="" style={{ height: 400 }} />
             <Styled.FrameContent>
               <Text typo={Typography.Size24} bold>
                 네컷 찍기 📸
