@@ -14,7 +14,7 @@ export const Header = styled.header`
 `;
 
 export const Content = styled.main`
-  height: calc(100vh - 75px - 82px);
+  height: calc(100dvh - 75px - 82px);
   padding: 16px;
   display: flex;
   justify-content: center;
