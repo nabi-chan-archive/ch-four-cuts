@@ -81,11 +81,11 @@ export const frameRouter = router({
 
         return { success: true };
       } catch (error) {
+        console.log(error);
         if (error instanceof TRPCError) {
           throw error;
         }
 
-        console.log(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: '프레임을 만드는데 실패했습니다',

@@ -64,10 +64,14 @@ export const printerRouter = router({
       try {
         const listFiles = await readdir(resolve('public/images/input/' + input.sessionId));
         const footerSvg = await generateFooter({ qrcodeUrl: process.env.APP_URL + input.sessionId });
-        await prisma.session.update({
-          where: { sessionId: input.sessionId },
-          data: { printedCount: { increment: 1 } },
-        });
+        try {
+          await prisma.session.update({
+            where: { sessionId: input.sessionId },
+            data: { printedCount: { increment: 1 } },
+          });
+        } catch (error) {
+          console.log('prisma failed', error);
+        }
         await readdir(resolve('public/images/output/' + input.sessionId)).catch(() => {
           mkdir(resolve('public/images/output/' + input.sessionId)).catch(_.noop);
         });
