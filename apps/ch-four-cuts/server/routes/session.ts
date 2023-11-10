@@ -65,7 +65,7 @@ export const sessionRouter = router({
   createSession: publicProcedure.input(z.object({ frameType: z.number() })).mutation(async ({ input }) => {
     try {
       return await prisma.session.create({
-        data: { frameType: _.toString(input.frameType) },
+        data: { sessionId: _.toString(+new Date()).slice(0, -4), frameType: _.toString(input.frameType) },
         select: {
           sessionId: true,
         },

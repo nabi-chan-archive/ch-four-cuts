@@ -24,7 +24,7 @@ model Config {
 }
 
 model Session {
-  sessionId String @id @default(uuid()) @map("session_id")
+  sessionId String @id @map("session_id")
 
   createdAt    DateTime @default(now()) @map("created_at")
   // 프레임 타입
