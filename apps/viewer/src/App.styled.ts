@@ -1,7 +1,7 @@
 import { styled } from '@ch-four-cuts/bezier-design-system';
 
 export const Container = styled.div`
-  height: 100vh;
+  height: 100dvh;
 `;
 
 export const Header = styled.header`
