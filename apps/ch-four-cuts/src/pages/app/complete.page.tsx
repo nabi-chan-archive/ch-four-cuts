@@ -24,7 +24,7 @@ function Page() {
         <Text typo={Typography.Size24} marginBottom={24}>
           안녕히 가세요! 👋
           <br />
-          해커톤에서 좋은 결과가 있기를 바라요!
+          Channel X와 함께 좋은 시간 보내세요!
         </Text>
 
         <a href="/">
