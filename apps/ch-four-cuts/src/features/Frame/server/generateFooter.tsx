@@ -13,7 +13,7 @@ export async function generateFooter({ qrcodeUrl }: GenerateFooterArgs) {
 
   return await satori(
     <div style={{ display: 'flex', flexDirection: 'column', width: 520 }}>
-      <Footer qrCodeLink={qrCodeLink} />
+      <Footer qrCodeLink={qrCodeLink} qrCodeUrl={qrcodeUrl} />
     </div>,
     {
       width: 520,

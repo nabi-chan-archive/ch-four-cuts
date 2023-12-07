@@ -34,9 +34,10 @@ export function Image({ src }: ImageProps) {
 
 interface FooterProps {
   qrCodeLink: string;
+  qrCodeUrl: string;
 }
 
-export function Footer({ qrCodeLink }: FooterProps) {
+export function Footer({ qrCodeLink, qrCodeUrl }: FooterProps) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -114,8 +115,8 @@ export function Footer({ qrCodeLink }: FooterProps) {
             />
           </g>
         </svg>
-        <span>{format(new Date(), 'yyyy-MM-dd HH:mm:ss')} @ Channel Talk</span>
-        <span>{qrCodeLink}</span>
+        <span>{format(new Date(), 'yyyy-MM-dd HH:mm:ss')} @ Channel X</span>
+        <span>{qrCodeUrl}</span>
       </div>
       <img style={{ width: 100, height: 100 }} src={qrCodeLink} alt="" />
     </div>
