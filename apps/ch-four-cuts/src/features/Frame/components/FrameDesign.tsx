@@ -41,7 +41,16 @@ export function Footer({ qrCodeLink, qrCodeUrl }: FooterProps) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1280 800">
+        <svg
+          version="1.1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          viewBox="0 0 1280 800"
+          width="162"
+          height="108"
+        >
           <g>
             <path
               fill="#231815"

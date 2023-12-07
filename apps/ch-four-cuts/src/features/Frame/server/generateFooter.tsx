@@ -17,7 +17,7 @@ export async function generateFooter({ qrcodeUrl }: GenerateFooterArgs) {
     </div>,
     {
       width: 520,
-      height: 100,
+      height: 130,
       fonts: [
         {
           name: 'Pretendard',
