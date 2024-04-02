@@ -1,5 +1,5 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
-import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { ChannelBtnFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { navigate } from 'vike/client/router';
@@ -58,7 +58,7 @@ function Page() {
   return (
     <Styled.Container>
       <Styled.Wrapper>
-        <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+        <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <Text typo={Typography.Size36} bold marginTop={8}>
           사진을 인쇄하고 있어요!
         </Text>

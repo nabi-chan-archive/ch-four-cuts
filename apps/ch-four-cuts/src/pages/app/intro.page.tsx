@@ -7,7 +7,7 @@ import {
   Text,
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
-import { ChannelBtnSmileFilledIcon, MinusIcon, PlusIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { ChannelBtnFilledIcon, MinusIcon, PlusIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useAtom } from 'jotai';
 import { printerCountAtom } from '#/features/AppState';
 import * as Styled from './intro.styled';
@@ -18,7 +18,7 @@ function Page() {
   return (
     <Styled.Container>
       <Styled.Wrapper>
-        <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+        <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <Text typo={Typography.Size36} bold marginTop={8} marginBottom={24}>
           얼마나 많이 인쇄할까요?
         </Text>

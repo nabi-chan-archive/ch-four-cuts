@@ -12,7 +12,7 @@
     }
   },
   "dependencies": {
-    "@channel.io/bezier-icons": "^0.15.0",
+    "@channel.io/bezier-icons": "^0.23.0",
     "@channel.io/bezier-react": "^1.17.0",
     "@types/styled-components": "^5.1.29",
     "styled-components": "^5.3.11"

@@ -226,11 +226,11 @@ importers:
   packages/bezier-design-system:
     dependencies:
       '@channel.io/bezier-icons':
-        specifier: ^0.15.0
-        version: 0.15.0
+        specifier: ^0.23.0
+        version: 0.23.0
       '@channel.io/bezier-react':
         specifier: ^1.17.0
-        version: 1.17.0(@channel.io/bezier-icons@0.15.0)(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+        version: 1.17.0(@channel.io/bezier-icons@0.23.0)(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@types/styled-components':
         specifier: ^5.1.29
         version: 5.1.29
@@ -1333,12 +1333,12 @@ packages:
       '@brillout/import': 0.2.3
     dev: true
 
-  /@channel.io/bezier-icons@0.15.0:
+  /@channel.io/bezier-icons@0.23.0:
     resolution:
-      { integrity: sha512-rM/TZ9V8MS5sQFcQ0bPmou9+nKI8RPycRIZdvkl5zhowH+hFTkWFucMlQJzjbNB2re9hDiyjObLSYrJW0axgiA== }
+      { integrity: sha512-oAmf6eUPCHaCrGBEoBQpsSsvYHZJxXsy+ppI/PydJOgN1i//hgvsW2Advn4L0EDswdrPQ4B+hsuhCiEjp080WA== }
     dev: false
 
-  /@channel.io/bezier-react@1.17.0(@channel.io/bezier-icons@0.15.0)(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
+  /@channel.io/bezier-react@1.17.0(@channel.io/bezier-icons@0.23.0)(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
     resolution:
       { integrity: sha512-m11DNTdWegABdBhgfkyJpZ0tlDhRsJBq0EjnsFI3JJzcwFEqkwkdUj/El6bNZqYjOwj2yOnFcBJ3QhnoXtZQWw== }
     peerDependencies:
@@ -1350,7 +1350,7 @@ packages:
       '@channel.io/bezier-icons':
         optional: true
     dependencies:
-      '@channel.io/bezier-icons': 0.15.0
+      '@channel.io/bezier-icons': 0.23.0
       '@radix-ui/react-checkbox': 1.0.4(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-dialog': 1.0.5(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-radio-group': 1.1.3(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)

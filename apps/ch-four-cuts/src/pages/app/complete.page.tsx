@@ -1,5 +1,5 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
-import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { ChannelBtnFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 import { selectedImageAtom, sessionAtom } from '#/features/AppState';
@@ -17,14 +17,14 @@ function Page() {
   return (
     <Styled.Container>
       <Styled.Wrapper>
-        <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+        <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <Text typo={Typography.Size36} bold marginTop={8}>
           모두 인쇄 완료!
         </Text>
         <Text typo={Typography.Size24} marginBottom={24}>
           안녕히 가세요! 👋
           <br />
-          Channel X와 함께 좋은 시간 보내세요!
+          채널코퍼레이션과 함께 좋은 시간 보내세요!
         </Text>
 
         <a href="/">

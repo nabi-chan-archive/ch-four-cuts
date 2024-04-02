@@ -1,5 +1,5 @@
 import { Button, ButtonSize, Icon, IconSize, Text, Typography } from '@ch-four-cuts/bezier-design-system';
-import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { ChannelBtnFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { printerFrameAtom, sessionAtom } from '#/features/AppState';
@@ -79,7 +79,7 @@ function Page() {
     return (
       <Styled.Container>
         <Styled.Wrapper>
-          <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+          <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
           <Text typo={Typography.Size36} bold marginTop={8}>
             오류가 발생했어요!
           </Text>
@@ -94,7 +94,7 @@ function Page() {
     return (
       <Styled.Container>
         <Styled.Wrapper>
-          <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+          <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
           <Text typo={Typography.Size36} bold marginTop={8}>
             사진 촬영 완료!
           </Text>
@@ -113,7 +113,7 @@ function Page() {
   return (
     <Styled.Container>
       <Styled.Wrapper>
-        <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+        <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <Text typo={Typography.Size36} bold marginTop={8}>
           📸 {capturedImages.length + 1} / {MAX} 번째 사진 찍는 중...
         </Text>

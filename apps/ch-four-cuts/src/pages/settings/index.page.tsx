@@ -10,7 +10,7 @@ import {
   Text,
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
-import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { ChannelBtnFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import { format } from 'date-fns';
 import _ from 'lodash';
 import { useSettingsQuery } from '#/features/Settings/queries/useSettingsQuery';
@@ -47,7 +47,7 @@ function Page() {
   return (
     <Styled.Container>
       <Styled.Header>
-        <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+        <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
         <AlphaStack direction="vertical">
           <Text typo={Typography.Size36} bold>
             채널 네컷 관리자 화면
@@ -169,7 +169,7 @@ function Page() {
                 {!sessionList.data?.length && <ListItem content="세션이 없습니다." disabled />}
                 {sessionList.data?.map((session) => (
                   <ListItem
-                    leftIcon={ChannelBtnSmileFilledIcon}
+                    leftIcon={ChannelBtnFilledIcon}
                     content={session.sessionId}
                     rightContent={
                       format(new Date(session.createdAt), 'yyyy-MM-dd HH:mm:ss') + `, ${session.frameType}컷`
@@ -226,7 +226,7 @@ function Page() {
                 {!sessionList.data?.length && <ListItem content="세션이 없습니다." disabled />}
                 {sessionList.data?.map((session) => (
                   <ListItem
-                    leftIcon={ChannelBtnSmileFilledIcon}
+                    leftIcon={ChannelBtnFilledIcon}
                     content={session.sessionId}
                     rightContent={
                       format(new Date(session.createdAt), 'yyyy-MM-dd HH:mm:ss') + `, ${session.frameType}컷`

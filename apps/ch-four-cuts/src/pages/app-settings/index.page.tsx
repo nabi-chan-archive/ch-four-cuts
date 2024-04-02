@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from '@ch-four-cuts/bezier-design-system';
-import { ChannelBtnSmileFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
+import { ChannelBtnFilledIcon } from '@ch-four-cuts/bezier-design-system/icons';
 import _ from 'lodash';
 import { useState } from 'react';
 import { useAppSettingsQuery } from '#/features/Settings/queries/useAppSettingsQuery';
@@ -46,7 +46,7 @@ export function Page() {
     >
       <AlphaStack direction="vertical" style={{ padding: 16 }} spacing={16}>
         <Styled.Header>
-          <Icon source={ChannelBtnSmileFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
+          <Icon source={ChannelBtnFilledIcon} size={72 as IconSize} color="bgtxt-blue-normal" />
           <AlphaStack direction="vertical">
             <Text typo={Typography.Size36} bold>
               채널 네컷 초기 설정 화면
