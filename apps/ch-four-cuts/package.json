@@ -8,6 +8,7 @@
     "postinstall": "node ./scripts/postinstall.js",
     "server": "node --experimental-specifier-resolution=node --loader=./server/loader.js ./server/index.ts",
     "server:dev": "npm run server",
+    "server:no-die": "pm2 start pnpm -- server:dev",
     "server:prod": "cross-env NODE_ENV=production npm run server",
     "start": "pnpm run server:prod"
   },
@@ -30,6 +31,7 @@
     "jimp": "^0.22.10",
     "jotai": "^2.5.1",
     "node-thermal-printer": "^4.4.1",
+    "pm2": "^5.3.1",
     "pngjs": "^7.0.0",
     "printer": "^0.4.0",
     "prisma": "^5.5.2",
