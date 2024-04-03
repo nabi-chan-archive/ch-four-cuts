@@ -1,4 +1,4 @@
-import { BezierProvider, DarkFoundation } from '@ch-four-cuts/bezier-design-system';
+import { BezierProvider, LightFoundation } from '@ch-four-cuts/bezier-design-system';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -9,7 +9,7 @@ if (!root) {
 }
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <BezierProvider initialFoundation={DarkFoundation}>
+    <BezierProvider initialFoundation={LightFoundation}>
       <App />
     </BezierProvider>
   </React.StrictMode>,
